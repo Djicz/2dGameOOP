@@ -16,7 +16,5 @@ public class Main extends JFrame {
         window.setVisible(true); // Hien thi screen len man hinh = true
         gamePanel.setUpGame();
         gamePanel.startGameThread();
-
-
     }
 }

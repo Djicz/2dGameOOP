@@ -11,6 +11,7 @@ public class object_sword extends SuperObject {
     public object_sword() {
         name = "sword";
         stat = 1;
+        knockBackPower = 10;
         try {
             image = ImageIO.read(getClass().getResourceAsStream("/objects/sword_normal.png"));
         }catch(IOException e) {

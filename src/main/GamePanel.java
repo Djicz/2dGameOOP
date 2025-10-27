@@ -1,4 +1,5 @@
 package main;
+import AI.PathFinder;
 import entity.Entity;
 import entity.Player;
 import entity.Projectile;
@@ -31,7 +32,24 @@ public class GamePanel extends JPanel implements Runnable {
     public final int gamePause = 2;
     public final int dialogueState = 3;
     public final int characterState = 4;
-    public int reviveCounter = 0;
+    public final int shopState = 5;
+    public boolean callWithShop = false;
+    public boolean checkGate = false;
+    public int[] reviveCounter = new int[20];
+    public final String map_1 = "/maps/worldMap.txt";
+    public final String map_2 = "/maps/worldMap2.txt";
+    public final String map_3 = "/maps/worldMap3.txt";
+    public final String map_4 = "/maps/dungeon1.txt";
+    public final String map_5 = "/maps/dungeon2.txt";
+    public final String map_6 = "/maps/dungeon3.txt";
+    public final String map_7 = "/maps/dungeon4.txt";
+    public final String map_8 = "/maps/dungeon5.txt";
+    public final String map_9 = "/maps/dungeon6.txt";
+    public final String map_10 = "/maps/dungeon7.txt";
+    public String currentMap;
+    public String tmpMap;
+    public int teleCounter = 0;
+    public boolean teleSet = false;
     public int getMaxWorldCol() {
         return maxWorldCol;
     }
@@ -88,8 +106,9 @@ public class GamePanel extends JPanel implements Runnable {
     public Player getPlayer() {
         return player;
     }
-    public Entity[] npc = new Entity[10];
-    public Entity[] monster = new Entity[10];
+    public Entity[] npc = new Entity[20];
+    public Entity[] monster = new Entity[20];
+    public PathFinder pFinder = new PathFinder(this);
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight)); // Set size yeu thich, trong nay mac dinh se hien size width * height
         this.setBackground(Color.black); // Nen mac dinh se co mau den
@@ -97,9 +116,16 @@ public class GamePanel extends JPanel implements Runnable {
         this.addKeyListener(keyHandler); // Them phim da nhap de GamePanel nhan ra
         this.setFocusable(true); // GamePanel focus vao key vua nhap
         gameState = titleState; // Mac dinh trang thai game continue;
+        currentMap = map_1;
+        tmpMap = map_1;
     }
 
     public void setUpGame() {
+        for(int i = 0; i < 20; i++) {
+            npc[i] = null;
+            monster[i] = null;
+            obj[i] = null;
+        }
         aSetter.setObject();
         aSetter.setNPC();
         aSetter.setMonster();
@@ -112,7 +138,6 @@ public class GamePanel extends JPanel implements Runnable {
     public void update() {
 
         if(this.gameState == this.gameContinue) {
-            ++reviveCounter;
             player.update();
             for(int i = 0; i < npc.length; i++){
                 if(npc[i] != null) {
@@ -120,6 +145,7 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
             for(int i = 0; i < monster.length; i++){
+
                 if(monster[i] != null) {
                     if(monster[i].aliveState == true) {
                         monster[i].update();
@@ -132,14 +158,14 @@ public class GamePanel extends JPanel implements Runnable {
                     }
                 }
                 else {
-                    if(reviveCounter > 300) {
+                    reviveCounter[i]++;
+                    if(reviveCounter[i] > 600) {
+                        reviveCounter[i] = 0;
                         aSetter.setMonster(i);
                     }
                 }
             }
-            if(reviveCounter > 300) {
-                reviveCounter = 0;
-            }
+
         }
         for(int i = 0; i < projectileList.size(); i++){
             if(projectileList.get(i) != null) {
@@ -191,6 +217,13 @@ public class GamePanel extends JPanel implements Runnable {
             if(ui.messageCounter > 120) {
                 ui.messageOn = false;
                 ui.messageCounter = 0;
+            }
+        }
+        if(teleSet == true) {
+            ++teleCounter;
+            if(teleCounter > 300) {
+                teleCounter = 0;
+                teleSet = false;
             }
         }
 

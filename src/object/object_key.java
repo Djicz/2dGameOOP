@@ -6,6 +6,7 @@ import java.io.IOException;
 public class object_key extends SuperObject{
     public object_key() {
         name = "key";
+        information = "1 chiếc chìa khóa bình thường";
         try {
             image = ImageIO.read(getClass().getResourceAsStream("/objects/key.png"));
         }catch(IOException e){

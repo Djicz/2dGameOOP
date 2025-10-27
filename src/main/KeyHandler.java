@@ -5,7 +5,7 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
     GamePanel gp;
-    public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, shiftPressed, shotKeyPressed;
+    public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, shiftPressed, shotKeyPressed, escPressed;
 
     public KeyHandler(GamePanel gp) {
         this.gp = gp;
@@ -19,6 +19,26 @@ public class KeyHandler implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode(); // Tra ve phim da duoc nhan tren keyboard (dang ma Aski)
+
+        if(code == KeyEvent.VK_1) {
+            if(gp.getPlayer().hpQC == false && gp.getPlayer().hpQAverage > 0) {
+                gp.getPlayer().hpQAverage--;
+                gp.getPlayer().hpQC = true;
+                gp.ui.currentHpCd = gp.ui.cdHpMax;
+            }
+        }
+
+        if(code == KeyEvent.VK_2) {
+            if(gp.getPlayer().manaQC == false && gp.getPlayer().manaQAverage > 0) {
+                gp.getPlayer().manaQAverage--;
+                gp.getPlayer().manaQC = true;
+                gp.ui.currentManaCd = gp.ui.cdManaMax;
+            }
+        }
+
+        if(code == KeyEvent.VK_ESCAPE) {
+            escPressed = true;
+        }
         if(code == KeyEvent.VK_F) {
             shotKeyPressed = true;
         }
@@ -31,6 +51,8 @@ public class KeyHandler implements KeyListener {
 
             }
             else if(gp.gameState == gp.characterState) {
+                gp.ui.slotNumX = 0;
+                gp.ui.slotNumY = 0;
                 gp.gameState = gp.gameContinue;
             }
         }
@@ -83,6 +105,10 @@ public class KeyHandler implements KeyListener {
                 if(gp.ui.slotNumY > 0)  gp.ui.slotNumY--;
                 else    gp.ui.slotNumY = 5;
             }
+            if(gp.gameState == gp.shopState) {
+                if(gp.ui.slotNumY > 0)  gp.ui.slotNumY--;
+                else    gp.ui.slotNumY = 7;
+            }
             upPressed = true;
         }
 
@@ -90,6 +116,12 @@ public class KeyHandler implements KeyListener {
 
             if(gp.gameState == gp.characterState) {
                 if(gp.ui.slotNumY < 5)  gp.ui.slotNumY++;
+                else {
+                    gp.ui.slotNumY = 0;
+                }
+            }
+            if(gp.gameState == gp.shopState) {
+                if(gp.ui.slotNumY < 7)  gp.ui.slotNumY++;
                 else {
                     gp.ui.slotNumY = 0;
                 }
@@ -114,6 +146,20 @@ public class KeyHandler implements KeyListener {
                 }
 
             }
+            if(gp.gameState == gp.shopState) {
+                if(gp.ui.slotNumX > 0)  gp.ui.slotNumX--;
+                else if(gp.ui.slotNumX == 0) {
+                    if(gp.ui.slotNumY == 0) {
+                        gp.ui.slotNumX = 6;
+                        gp.ui.slotNumY = 7;
+                    }
+                    else {
+                        gp.ui.slotNumY--;
+                        gp.ui.slotNumX = 6;
+                    }
+                }
+
+            }
             leftPressed = true;
         }
 
@@ -123,6 +169,20 @@ public class KeyHandler implements KeyListener {
                 if(gp.ui.slotNumX < 4)  gp.ui.slotNumX++;
                 else if(gp.ui.slotNumX == 4){
                     if(gp.ui.slotNumY < 5){
+
+                        gp.ui.slotNumY++;
+                        gp.ui.slotNumX = 0;
+                    }
+                    else {
+                        gp.ui.slotNumX = 0;
+                        gp.ui.slotNumY = 0;
+                    }
+                }
+            }
+            if(gp.gameState == gp.shopState) {
+                if(gp.ui.slotNumX < 6)  gp.ui.slotNumX++;
+                else if(gp.ui.slotNumX == 6){
+                    if(gp.ui.slotNumY < 7){
 
                         gp.ui.slotNumY++;
                         gp.ui.slotNumX = 0;
@@ -146,6 +206,12 @@ public class KeyHandler implements KeyListener {
     public void keyReleased(KeyEvent e) {
 
         int code = e.getKeyCode(); // Lay phim duoc nha ra
+        if(code == KeyEvent.VK_ESCAPE) {
+            escPressed = false;
+        }
+        if(code == KeyEvent.VK_ENTER) {
+            enterPressed = false;
+        }
 
         if(code == KeyEvent.VK_F) {
             shotKeyPressed = false;

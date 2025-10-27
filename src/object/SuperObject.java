@@ -18,6 +18,8 @@ public class SuperObject {
     public int type;
     public final int objAddToInventory = 1;
     public final int objOnlyForPickUp = 2;
+    public String information;
+    public int knockBackPower = 0;
     public void draw(Graphics2D g2, GamePanel gp) {
         int screenX = worldX - gp.getPlayer().worldX + gp.getPlayer().screenX;
         // player.worldX la toa do X cua player trong map world, player.screenX la toa do vi tri nguoi choi hien thi tren man hinh (o giua map)
