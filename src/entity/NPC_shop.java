@@ -1,11 +1,10 @@
 package entity;
 
 import main.GamePanel;
-import object.SuperObject;
 
 import java.util.ArrayList;
 
-public class NPC_shop  extends Entity{
+public class NPC_shop extends Entity{
     public NPC_shop(GamePanel gp) {
         super(gp);
         getNPCImage();
@@ -19,7 +18,7 @@ public class NPC_shop  extends Entity{
         down2 = getImage("/NPC/shop/merchant_down_2");
     }
     public void setDialogue() {
-        dialogues[0] = "Are you have money?\nLet's check my shopd";
+        dialogues[0] = "Are you have money?\nLet's check my shop";
     }
     public void speak() {
         super.speak();

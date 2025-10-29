@@ -1,16 +1,12 @@
 package entity;
 
 import main.GamePanel;
-import object.SuperObject;
-import object.object_coin;
-import object.object_shield;
-import object.object_sword;
+import objects.SuperObject;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -28,7 +24,7 @@ public class Entity {
     attack_left1, attack_left2, attack_left3, attack_left4, attack_left5, attack_left6, attack_left7, attack_left8,
     attack_right1, attack_right2, attack_right3, attack_right4, attack_right5, attack_right6, attack_right7, attack_right8;
     public String direction;
-
+    public boolean colisPlayer = false;
     public boolean aliveState = true;
     public int aliveCounter = 0;
 
@@ -58,7 +54,8 @@ public class Entity {
     public int immortalCounter = 0;
     public boolean knockBack = false;
     public int knockBackPower = 0;
-
+    public boolean drawHP = false;
+    public int drawHPCounter = 0;
     public boolean attackMode = false;
     public int expWhenKill;
     public int coinWanted;
@@ -78,7 +75,7 @@ public class Entity {
     public SuperObject currentShield;
     public Projectile projectile;
     public int useCost;
-
+    public boolean monsterFlag = false; // Khi bat co thi update quai onPath = true de tim duong di
     public boolean onPath = false;
 
     public Entity(GamePanel gp) {
@@ -211,6 +208,7 @@ public class Entity {
                 knockBackCounter = 0;
                 knockBack = false;
                 speed = defaultSpeed;
+
             }
             else if(collisionOn == false) {
                 switch (gp.getPlayer().direction) {
@@ -236,24 +234,33 @@ public class Entity {
             }
         }
         else {
-            setAction(); // Goi tu doi tuong lop con, uu tien chay method cua lop con
+            setAction();
 
+            collisionOn = false;
+            gp.cChecker.checkTile(this);
+            gp.cChecker.checkObject(this, false);
+            gp.cChecker.checkPlayer(this);
+            gp.cChecker.checkEntity(this, gp.monster);
+            gp.cChecker.checkEntity(this, gp.npc);
 
+            if (collisionOn && attackMode == false) {
+                // Đổi hướng ngẫu nhiên khi va chạm
+                String[] dirs = {"up", "down", "left", "right"};
+                direction = dirs[new Random().nextInt(dirs.length)];
+                collisionOn = false;
+                gp.cChecker.checkTile(this);
+                gp.cChecker.checkObject(this, false);
+                gp.cChecker.checkPlayer(this);
+                gp.cChecker.checkEntity(this, gp.monster);
+                gp.cChecker.checkEntity(this, gp.npc);
+            }
 
-            if (collisionOn == false) {
+            if (!collisionOn) {
                 switch (direction) {
-                    case "up":
-                        worldY -= speed;
-                        break;
-                    case "down":
-                        worldY += speed;
-                        break;
-                    case "left":
-                        worldX -= speed;
-                        break;
-                    case "right":
-                        worldX += speed;
-                        break;
+                    case "up": worldY -= speed; break;
+                    case "down": worldY += speed; break;
+                    case "left": worldX -= speed; break;
+                    case "right": worldX += speed; break;
                 }
             }
         }
@@ -281,44 +288,29 @@ public class Entity {
 
     public void speak() {
         gp.ui.currentDialogue = dialogues[0];
-
-        switch (gp.getPlayer().direction) {
-            case "up":
-                direction = "down";
-                break;
-            case "down":
-                direction = "up";
-                break;
-            case "left":
-                direction = "right";
-                break;
-            case "right":
-                direction = "left";
-                break;
-        }
     }
     public void checkDrop() {
-        int rd = new Random().nextInt(100) + 1;
-        if(rd <= 25) {
-            dropItems(new object_coin());
-        }
-        else if(rd <= 50) {
-            dropItems(new object_sword());
-        }
-        else {
-            dropItems(new object_shield());
-        }
+//        int rd = new Random().nextInt(100) + 1;
+//        if(rd <= 25) {
+//            dropItems(new object_coin());
+//        }
+//        else if(rd <= 50) {
+//            dropItems(new object_sword());
+//        }
+//        else {
+//            dropItems(new object_shield());
+//        }
 
     }
     public void dropItems(SuperObject item) {
-        for(int i = 0; i < gp.obj.length; i++) {
-            if(gp.obj[i] == null) {
-                gp.obj[i] = item;
-                gp.obj[i].worldX = worldX;
-                gp.obj[i].worldY = worldY;
-                break;
-            }
-        }
+//        for(int i = 0; i < gp.obj.length; i++) {
+//            if(gp.obj[i] == null) {
+//                gp.obj[i] = item;
+//                gp.obj[i].worldX = worldX;
+//                gp.obj[i].worldY = worldY;
+//                break;
+//            }
+//        }
     }
     public void searchPath(int goalCol, int goalRow) {
         int startCol = (worldX + solidArea.x) / gp.getTileSize();

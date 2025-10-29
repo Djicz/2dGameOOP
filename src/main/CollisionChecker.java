@@ -174,24 +174,28 @@ public class CollisionChecker {
                 entity.solidArea.y -= entity.speed;
                 if(entity.solidArea.intersects(gp.getPlayer().solidArea)) {
                     entity.collisionOn = true;
+                    entity.colisPlayer = true;
                 }
                 break;
             case "down":
                 entity.solidArea.y += entity.speed;
                 if(entity.solidArea.intersects(gp.getPlayer().solidArea)) {
                     entity.collisionOn = true;
+                    entity.colisPlayer = true;
                 }
                 break;
             case "left":
                 entity.solidArea.x -= entity.speed;
                 if(entity.solidArea.intersects(gp.getPlayer().solidArea)) {
                     entity.collisionOn = true;
+                    entity.colisPlayer = true;
                 }
                 break;
             case "right":
                 entity.solidArea.x += entity.speed;
                 if(entity.solidArea.intersects(gp.getPlayer().solidArea)) {
                     entity.collisionOn = true;
+                    entity.colisPlayer = true;
                 }
                 break;
         }

@@ -1,20 +1,11 @@
 package entity;
 
-import com.sun.security.jgss.GSSUtil;
-import main.CollisionChecker;
 import main.GamePanel;
 import main.KeyHandler;
-import object.SuperObject;
-import object.object_fireball;
-import object.object_shield;
-import object.object_sword;
+import objects.object_fireball;
 
-import javax.crypto.spec.PSource;
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 public class Player extends Entity {
@@ -24,6 +15,7 @@ public class Player extends Entity {
     public int hpQAverage, manaQAverage;
     public boolean hpQC, manaQC;
     public int hpQCounter, manaQCounter;
+    public boolean projectSkill;
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
         this.keyH = keyH;
@@ -48,8 +40,8 @@ public class Player extends Entity {
         exp = 1;
         nextLevelExp = 5;
         coin = 0;
-        currentWeapon = new object_sword();
-        currentShield = new object_shield();
+        currentWeapon = null;
+        currentShield = null;
         attack = getPlayerAttack();
         defense = getPlayerDefense();
         addItems();
@@ -57,15 +49,16 @@ public class Player extends Entity {
 
     }
     public void addItems() {
-        items.add(currentWeapon);
-        items.add(currentShield);
+
     }
     public int getPlayerAttack() {
-        return currentWeapon.stat + strength * level; // Attack = chi so cua vu khi + suc manh * level
+        if(currentWeapon != null)   return currentWeapon.stat + strength * level; // Attack = chi so cua vu khi + suc manh * level
+        return strength * level;
 
     }
     public int getPlayerDefense() {
-        return currentShield.stat + dexterity * level;
+        if(currentShield != null)   return currentShield.stat + dexterity * level;
+        return dexterity * level;
     }
 
     public void getPlayerImage() {
@@ -149,6 +142,7 @@ public class Player extends Entity {
         stamina = maxStamina;
         immortalCounter = 0;
         immortalState = false;
+        projectSkill = false;
         projectile = new object_fireball(gp);
         hpQC = false;
         manaQC = false;
@@ -160,7 +154,7 @@ public class Player extends Entity {
         // Update status player
         updateState();
         // Check trang thai tan cong
-        if(attackMode == true) {
+        if(attackMode == true && currentWeapon != null) {
             attackProcess();
         }
         // Toa do ben trai tren cung la (0, 0)
@@ -300,7 +294,7 @@ public class Player extends Entity {
 
         }
 
-        if(keyH.shotKeyPressed == true && projectile.aliveState == false) {
+        if(keyH.shotKeyPressed == true && projectile.aliveState == false && projectSkill == true) {
             projectile.set(worldX, worldY, direction, true, this);
             gp.projectileList.add(projectile);
 
@@ -622,10 +616,12 @@ public class Player extends Entity {
     public void damageMonster(int i, int knockBackPower) {
         if(i != 999) {
             if(gp.monster[i].immortalState == false) {
-
+                gp.monster[i].drawHP = true;
+                gp.monster[i].drawHPCounter = 0;
                 if(knockBackPower > 0)  knockBack(gp.monster[i], knockBackPower);
                 gp.monster[i].life -= attack * 10;
                 gp.monster[i].immortalState = true;
+                if(gp.monster[i].monsterFlag == false)   gp.monster[i].monsterFlag = true;
                 if(gp.monster[i].life <= 0) {
                     gp.monster[i].dying = true;
                 }
@@ -674,7 +670,7 @@ public class Player extends Entity {
         int tmpWidth = 18 * 2;
         int tmpHeight = 24 * 2;
         // Draw attack
-        if(attackMode == true) {
+        if(attackMode == true && currentWeapon != null) {
             switch (direction) {
                 case "up": //Neu direction == "up" => image = up1
                     if (spriteNum == 1) {

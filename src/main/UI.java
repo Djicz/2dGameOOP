@@ -1,8 +1,6 @@
 package main;
 
-import object.SuperObject;
-import object.object_heart;
-import object.object_sword;
+import objects.*;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -16,9 +14,6 @@ public class UI {
     GamePanel gp;
     public Font arial;
     public Font maruMonica;
-    BufferedImage keyImage;
-    BufferedImage heart_full, heart_half, heart_blank;
-    BufferedImage hpAve, manaAve;
     public boolean messageOn = false;
     public String message = "";
     public int messageCounter = 0;
@@ -29,7 +24,10 @@ public class UI {
     public int currentHpCd = cdHpMax;
     public int cdManaMax = 100;
     public int currentManaCd = cdManaMax;
+    public int reTryCounter = 1;
+    public int delayTime = 10;
     public void showMessage(String text) {
+        g2.setFont(maruMonica.deriveFont(Font.PLAIN, 15));
         message = text;
         messageOn = true;
     }
@@ -44,12 +42,6 @@ public class UI {
         }catch(FontFormatException e) {
             e.printStackTrace();
         }catch(IOException e) {
-            e.printStackTrace();
-        }
-        try{
-            hpAve = ImageIO.read(getClass().getResourceAsStream("/objects/potion_red.png"));
-            manaAve = ImageIO.read(getClass().getResourceAsStream("/objects/potion_red.png"));
-        }catch(IOException e){
             e.printStackTrace();
         }
 //        maruMonica = maruMonica.deriveFont(Font.BOLD, 20f);
@@ -70,9 +62,11 @@ public class UI {
                 g2.setFont(arial);
                 g2.setColor(Color.WHITE);
                 g2.drawString(message, gp.getTileSize() / 2, gp.getTileSize() * 6);
-
             }
             drawPosition();
+            if(gp.getPlayer().life <= 0) {
+                gp.gameState = gp.gameOverState;
+            }
         }
         if(gp.gameState == gp.gamePause) {
             drawPause(g2);
@@ -180,15 +174,130 @@ public class UI {
             }
         }
         if(gp.gameState == gp.characterState) {
+
             drawCharacterStatus();
             drawInventory();
+            if(gp.keyHandler.enterPressed == true) {
+                int itemsNum = 5 * slotNumY + slotNumX;
+                if (itemsNum < gp.getPlayer().items.size()) {
+                    gp.keyHandler.enterPressed = false;
+                    gp.gameState = gp.characterState_notify;
+                }
+            }
         }
         if(gp.gameState == gp.shopState) {
             drawShop();
             if(gp.keyHandler.escPressed == true) {
                 gp.gameState = gp.gameContinue;
             }
+            if(gp.keyHandler.enterPressed == true) {
+                gp.keyHandler.enterPressed = false;
+                int itemsNum = 7 * slotNumY + slotNumX;
+                if(itemsNum < gp.npc[0].items.size()) {
+                    gp.gameState = gp.shopState_notify;
+                }
+            }
         }
+        if(gp.gameState == gp.shopState_notify) {
+            drawShop();
+            drawNotify();
+            if(gp.keyHandler.enterPressed == true) {
+                int itemsNum = 7 * slotNumY + slotNumX;
+                if(itemsNum < gp.npc[0].items.size()) {
+                    if(gp.npc[0].items.get(itemsNum).type == SuperObject.weaponItems) {
+                        gp.getPlayer().items.add(gp.npc[0].items.get(itemsNum));
+                        gp.npc[0].items.remove(itemsNum);
+                    }
+                    else if(gp.npc[0].items.get(itemsNum).name.equals("HP Potion")) {
+                        gp.getPlayer().hpQAverage++;
+                    }
+                    else if(gp.npc[0].items.get(itemsNum).name.equals("Mana Potion")) {
+                        gp.getPlayer().manaQAverage++;
+                    }
+                    else if(gp.npc[0].items.get(itemsNum).type == SuperObject.skillItems) {
+                        gp.getPlayer().items.add(gp.npc[0].items.get(itemsNum));
+                        gp.npc[0].items.remove(itemsNum);
+                    }
+                }
+                gp.keyHandler.enterPressed = false;
+                gp.gameState = gp.shopState;
+            }
+            if(gp.keyHandler.escPressed == true) {
+                gp.keyHandler.escPressed = false;
+                gp.gameState = gp.shopState;
+            }
+        }
+        if(gp.gameState == gp.characterState_notify) {
+            drawCharacterStatus();
+            drawInventory();
+            drawNotify();
+            if(gp.keyHandler.enterPressed == true) {
+                int itemsNum = 5 * slotNumY + slotNumX;
+                if (itemsNum < gp.getPlayer().items.size()) {
+                    if (gp.getPlayer().items.get(itemsNum).type == new SuperObject().weaponItems) {
+                        SuperObject sword = gp.getPlayer().items.get(itemsNum);
+                        if(gp.getPlayer().currentWeapon != null) {
+                            gp.getPlayer().items.set(itemsNum, gp.getPlayer().currentWeapon);
+                        }
+                        else {
+                            gp.getPlayer().items.remove(itemsNum);
+                        }
+                        gp.getPlayer().currentWeapon = sword;
+                    }
+                    else if(gp.getPlayer().items.get(itemsNum).type == new SuperObject().skillItems) {
+                        gp.getPlayer().projectSkill = true;
+                        gp.getPlayer().items.remove(itemsNum);
+                    }
+                }
+                gp.keyHandler.enterPressed = false;
+                gp.gameState = gp.characterState;
+            }
+            if(gp.keyHandler.escPressed == true) {
+                gp.keyHandler.escPressed = false;
+                gp.gameState = gp.characterState;
+            }
+        }
+        if(gp.gameState == gp.gameOverState) {
+            drawRetry();
+            ++reTryCounter;
+            if(reTryCounter > 60) {
+                delayTime--;
+                reTryCounter = 0;
+            }
+            if(delayTime <= 0) {
+                gp.tileM.loadMap(gp.map_1);
+                gp.getPlayer().worldX = gp.getTileSize() * 40;
+                gp.getPlayer().worldY = gp.getTileSize() * 35;
+                gp.currentMap = gp.map_1;
+                gp.tmpMap = gp.map_1;
+                gp.setUpGame();
+                gp.getPlayer().life = gp.getPlayer().maxLife;
+                gp.getPlayer().stamina = gp.getPlayer().maxStamina;
+                gp.gameState = gp.gameContinue;
+
+            }
+        }
+    }
+    public void drawRetry() {
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+        g2.setFont(maruMonica.deriveFont(Font.BOLD, 40));
+        g2.setColor(Color.white);
+        g2.drawString("YOU DIED!", getXInMiddleScreen("YOU DIED!"), gp.getTileSize() * 3);
+        g2.setFont(maruMonica.deriveFont(Font.BOLD, 40));
+        g2.drawString("" + delayTime, getXInMiddleScreen("" + delayTime), gp.getTileSize() * 7);
+    }
+    public void drawNotify() {
+        g2.setColor(new Color(0, 0, 0, 150));
+        g2.fillRoundRect(gp.getTileSize() * 5, gp.getTileSize() * 5, gp.getTileSize() * 6, gp.getTileSize() * 2, 10, 10);
+        g2.setStroke(new BasicStroke(2));
+        g2.drawRoundRect(gp.getTileSize() * 5, gp.getTileSize() * 5, gp.getTileSize() * 6, gp.getTileSize() * 2, 10, 10);
+        g2.setFont(maruMonica.deriveFont(Font.PLAIN, 30));
+        g2.setColor(Color.white);
+        g2.drawString("Are you sure about that?", gp.getTileSize() * 5 + 15, gp.getTileSize() * 5 + 35);
+        g2.setFont(maruMonica.deriveFont(Font.PLAIN, 10));
+        g2.drawString("Press enter to confirm", gp.getTileSize() * 5 + 15, gp.getTileSize() * 6 + 11);
+        g2.drawString("Press ESC to exit", gp.getTileSize() * 5 + 15, gp.getTileSize() * 6 + 35);
+
     }
     public void drawPosition() {
         g2.setFont(maruMonica.deriveFont(Font.BOLD, 20));
@@ -206,8 +315,8 @@ public class UI {
         g2.setStroke(new BasicStroke(2));
         g2.drawRoundRect(xTmp, yTmp, widthTmp, heightTmp, 10, 10);
         g2.drawRoundRect(xTmp + gp.getTileSize(), yTmp, widthTmp, heightTmp, 10, 10);
-        g2.drawImage(hpAve, xTmp + 5, yTmp + 5, widthTmp - 10, heightTmp - 10, null);
-        g2.drawImage(manaAve, xTmp + 5 + gp.getTileSize(), yTmp + 5, widthTmp - 10, heightTmp - 10, null);
+        g2.drawImage(new hp_potion().image, xTmp + 5, yTmp + 5, widthTmp - 10, heightTmp - 10, null);
+        g2.drawImage(new mana_potion().image, xTmp + 5 + gp.getTileSize(), yTmp + 5, widthTmp - 10, heightTmp - 10, null);
         Font press = new Font("Arial", Font.BOLD, 15);
         g2.setFont(press);
         g2.drawString("1", xTmp + gp.getTileSize() / 2 - 5, yTmp - 5);
@@ -273,7 +382,7 @@ public class UI {
             g2.setStroke(new BasicStroke(3));
             g2.setColor(Color.white);
             g2.drawRoundRect(xIF, yIF, widthIF, heightIF, 35, 35);
-            g2.setFont(arial);
+            g2.setFont(maruMonica.deriveFont(Font.PLAIN, 20));
             g2.drawString("[" + gp.npc[0].items.get(slotNumY * 7 + slotNumX).name + "]", xIF + gp.getTileSize() / 4, yIF + gp.getTileSize() / 2);
             g2.drawString(gp.npc[0].items.get(slotNumY * 7 + slotNumX).information, xIF + gp.getTileSize() / 4, yIF + (gp.getTileSize() * 3) / 2);
         }
@@ -287,6 +396,7 @@ public class UI {
                 xr += gp.getTileSize();
             }
             else {
+                xr = x;
                 yr += gp.getTileSize();
                 itemCounter = 0;
             }
@@ -304,7 +414,7 @@ public class UI {
         g2.setColor(Color.white);
         g2.setStroke(new BasicStroke(5)); // Tao 1 vien co do day la 5
         g2.drawRoundRect(xTmp + 5, yTmp + 5, widthTmp - 10, heightTmp - 10, 25, 25);
-        g2.drawString("INVENTORY", xTmp + gp.getTileSize() * 2 - 10, yTmp + gp.getTileSize());
+        g2.drawString("INVENTORY", xTmp + gp.getTileSize() * 2 + 8, yTmp + gp.getTileSize());
 
         // Draw slot
         int xSlotStart = xTmp + 20;
@@ -330,6 +440,7 @@ public class UI {
                 xr += gp.getTileSize();
             }
             else {
+                xr = x;
                 yr += gp.getTileSize();
                 itemCounter = 0;
             }
@@ -345,8 +456,8 @@ public class UI {
         g2.setColor(c);
         g2.setStroke(new BasicStroke(5)); // Tao 1 vien co do day la 5
         g2.drawRoundRect(xTmp + 5, yTmp + 5, widthTmp - 10, heightTmp - 10, 25, 25);
-        Font t = new Font("Arial", Font.PLAIN, 20);
-        g2.setFont(t);
+
+        g2.setFont(maruMonica.deriveFont(Font.PLAIN, 20));
         xTmp += 25;
         yTmp += 40;
         g2.drawString("Level: " + gp.getPlayer().level, xTmp, yTmp);
@@ -362,10 +473,10 @@ public class UI {
         g2.drawString("Coin: " + gp.getPlayer().coin, xTmp, yTmp);
         yTmp += 40;
         g2.drawString("Weapon: ", xTmp, yTmp);
-        g2.drawImage(gp.getPlayer().currentWeapon.image, xTmp + gp.getTileSize() * 2, yTmp - 20, gp.getTileSize() / 2, gp.getTileSize() / 2, null);
+        if(gp.getPlayer().currentWeapon != null)    g2.drawImage(gp.getPlayer().currentWeapon.image, xTmp + gp.getTileSize() * 2, yTmp - 20, gp.getTileSize() / 2, gp.getTileSize() / 2, null);
         yTmp += 40;
         g2.drawString("Shield: ", xTmp, yTmp);
-        g2.drawImage(gp.getPlayer().currentShield.image, xTmp + gp.getTileSize() * 2, yTmp - 20, gp.getTileSize() / 2, gp.getTileSize() / 2, null);
+        if(gp.getPlayer().currentShield != null)    g2.drawImage(gp.getPlayer().currentShield.image, xTmp + gp.getTileSize() * 2, yTmp - 20, gp.getTileSize() / 2, gp.getTileSize() / 2, null);
     }
     public void drawHpAndStamina() {
         int xTmp = gp.getTileSize() / 2;
@@ -393,29 +504,6 @@ public class UI {
         int widthMana = (gp.getPlayer().stamina * (widthTmp -36)) / gp.getPlayer().maxStamina;
         g2.setColor(Color.blue);
         g2.fillRect(xTmp, yTmp + heightTmp + 4, widthMana, heightTmp - 15);
-    }
-    public void drawPlayerLife() {
-        int x = gp.getTileSize() / 2;
-        int y = gp.getTileSize() / 2;
-        int i = 0;
-        while(i < gp.getPlayer().maxLife / 2) {
-            g2.drawImage(heart_blank, x, y, 40, 40, null);
-            ++i;
-            x += gp.getTileSize();
-        }
-
-        x = gp.getTileSize() / 2;
-        y = gp.getTileSize() / 2;
-        i = 0;
-        while(i < gp.getPlayer().life) {
-            g2.drawImage(heart_half, x, y, 40, 40, null);
-            ++i;
-            if(i < gp.getPlayer().life) {
-                g2.drawImage(heart_full, x, y, 40, 40, null);
-            }
-            ++i;
-            x += gp.getTileSize();
-        }
     }
     public void drawTitleScreen() {
 //        g2.setColor(new Color(33, 107, 168));
@@ -492,9 +580,8 @@ public class UI {
 
     }
     public void drawPause(Graphics2D g2) {
-        String text = "Em oi win roi day!"; // Van ban muon in ra
-        Font pauseG = new Font("Arial", Font.BOLD, 40);
-        g2.setFont(pauseG);
+        String text = "Game Paused"; // Van ban muon in ra
+        g2.setFont(maruMonica.deriveFont(Font.BOLD, 40));
         g2.setColor(Color.white);
         int x = getXInMiddleScreen(text);
         int y = gp.getScreenHeight() / 2; // Can giua theo truc y

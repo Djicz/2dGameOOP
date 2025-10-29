@@ -2,9 +2,7 @@ package main;
 import AI.PathFinder;
 import entity.Entity;
 import entity.Player;
-import entity.Projectile;
-import object.SuperObject;
-import object.object_key;
+import objects.SuperObject;
 import tile.TileManager;
 
 import javax.swing.*;
@@ -33,6 +31,9 @@ public class GamePanel extends JPanel implements Runnable {
     public final int dialogueState = 3;
     public final int characterState = 4;
     public final int shopState = 5;
+    public final int shopState_notify = 6;
+    public final int characterState_notify = 7;
+    public final int gameOverState = 8;
     public boolean callWithShop = false;
     public boolean checkGate = false;
     public int[] reviveCounter = new int[20];
@@ -107,7 +108,7 @@ public class GamePanel extends JPanel implements Runnable {
         return player;
     }
     public Entity[] npc = new Entity[20];
-    public Entity[] monster = new Entity[20];
+    public Entity[] monster = new Entity[10];
     public PathFinder pFinder = new PathFinder(this);
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight)); // Set size yeu thich, trong nay mac dinh se hien size width * height
@@ -121,7 +122,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void setUpGame() {
-        for(int i = 0; i < 20; i++) {
+        for(int i = 0; i < 10; i++) {
             npc[i] = null;
             monster[i] = null;
             obj[i] = null;
