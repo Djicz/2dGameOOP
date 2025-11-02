@@ -317,7 +317,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void setUpGame() {
-        for(int i = 0; i < 10; i++) {
+        for(int i = 0; i < 11; i++) {
             npc[i] = null;
             monster[i] = null;
             obj[i] = null;
@@ -359,7 +359,7 @@ public class GamePanel extends JPanel implements Runnable {
                     reviveCounter[i]++;
                     if(reviveCounter[i] > 600) {
                         reviveCounter[i] = 0;
-                        aSetter.setMonster(i);
+                        if(i != 10) aSetter.setMonster(i);
                     }
                 }
             }

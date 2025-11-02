@@ -24,6 +24,7 @@ public class UI {
     public int currentManaCd = cdManaMax;
     public int reTryCounter = 1;
     public int delayTime = 10;
+    public SuperObject item;
     ArrayList<String> messageList = new ArrayList<>();
     ArrayList<Integer> messageCounterList = new ArrayList<>();
     public void addMessage(String text) {
@@ -196,6 +197,7 @@ public class UI {
                 gp.keyHandler.enterPressed = false;
                 int itemsNum = 7 * slotNumY + slotNumX;
                 if(itemsNum < gp.npc[0].items.size()) {
+                    item = gp.npc[0].items.get(itemsNum);
                     gp.setGameState(gp.getShopState_notify());
                 }
             }
@@ -210,26 +212,26 @@ public class UI {
                 drawNotify();
             }
             if(gp.keyHandler.enterPressed == true) {
-                if(gp.getPlayer().coin > gp.npc[0].items.get(itemsNum).price) {
+                if(gp.getPlayer().coin >= gp.npc[0].items.get(itemsNum).price) {
                     if (gp.npc[0].items.get(itemsNum).type == SuperObject.weaponItems || gp.npc[0].items.get(itemsNum).type == SuperObject.shieldItems) {
                         gp.getPlayer().items.add(gp.npc[0].items.get(itemsNum));
                         gp.npc[0].items.remove(itemsNum);
                     }
-                    if (gp.npc[0].items.get(itemsNum).name.equals("HP Potion")) {
+                    else if (gp.npc[0].items.get(itemsNum).name.equals("HP Potion")) {
                         gp.getPlayer().hpQAverage++;
                     }
-                    if (gp.npc[0].items.get(itemsNum).name.equals("Mana Potion")) {
+                    else if (gp.npc[0].items.get(itemsNum).name.equals("Mana Potion")) {
                         gp.getPlayer().manaQAverage++;
                     }
-                    if (gp.npc[0].items.get(itemsNum).type == SuperObject.skillItems) {
+                    else if (gp.npc[0].items.get(itemsNum).type == SuperObject.skillItems) {
                         gp.getPlayer().items.add(gp.npc[0].items.get(itemsNum));
                         gp.npc[0].items.remove(itemsNum);
                     }
-                    if (gp.npc[0].items.get(itemsNum).type == SuperObject.keyItems) {
+                    else if (gp.npc[0].items.get(itemsNum).type == SuperObject.keyItems) {
                         gp.getPlayer().items.add(gp.npc[0].items.get(itemsNum));
                         gp.npc[0].items.remove(itemsNum);
                     }
-                    gp.getPlayer().coin -= gp.npc[0].items.get(itemsNum).price;
+                    gp.getPlayer().coin -= item.price;
                 }
                 gp.keyHandler.enterPressed = false;
                 gp.setGameState(gp.getShopState());
@@ -292,14 +294,15 @@ public class UI {
             }
             if(delayTime <= 0) {
                 gp.tileM.loadMap(gp.getMap_1());
-                gp.getPlayer().worldX = gp.getTileSize() * 40;
-                gp.getPlayer().worldY = gp.getTileSize() * 35;
+                gp.getPlayer().worldX = gp.getTileSize() * 16;
+                gp.getPlayer().worldY = gp.getTileSize() * 13;
                 gp.setCurrentMap(gp.getMap_1());
                 gp.setTmpMap(gp.getMap_1());
                 gp.setUpGame();
                 gp.getPlayer().life = gp.getPlayer().maxLife;
                 gp.getPlayer().stamina = gp.getPlayer().maxStamina;
                 gp.setGameState(gp.getGameContinue());
+                delayTime = 10;
             }
         }
     }
