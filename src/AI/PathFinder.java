@@ -20,15 +20,15 @@ public class PathFinder {
 
     }
     public void instantiateNodes() {
-        node = new Node[gp.maxWorldRow][gp.maxWorldCol];
+        node = new Node[gp.getMaxWorldRow()][gp.getMaxWorldCol()];
         int col = 0;
         int row = 0;
 
-        while(col < gp.maxWorldCol && row < gp.maxWorldRow) {
+        while(col < gp.getMaxWorldCol() && row < gp.getMaxWorldRow()) {
             node[row][col] = new Node(col, row);
 
             col++;
-            if(col == gp.maxWorldCol) {
+            if(col == gp.getMaxWorldCol()) {
                 col = 0;
                 row++;
             }
@@ -37,12 +37,12 @@ public class PathFinder {
      public void resetNodes() {
         int col = 0;
         int row = 0;
-        while(col < gp.maxWorldCol && row < gp.maxWorldRow) {
+        while(col < gp.getMaxWorldCol() && row < gp.getMaxWorldRow()) {
             node[row][col].open = false;
             node[row][col].checked = false;
             node[row][col].solid = false;
             col++;
-            if(col == gp.maxWorldCol) {
+            if(col == gp.getMaxWorldCol()) {
                 col = 0;
                 row++;
             }
@@ -61,7 +61,7 @@ public class PathFinder {
 
         int col = 0;
         int row = 0;
-        while(col < gp.maxWorldCol && row < gp.maxWorldRow) {
+        while(col < gp.getMaxWorldCol() && row < gp.getMaxWorldRow()) {
             int tileNum = gp.getTileM().mapFromFile[row][col];
             if(gp.getTileM().tile[tileNum].collision == true) {
                 node[row][col].solid = true;
@@ -70,7 +70,7 @@ public class PathFinder {
             getCost(node[row][col]);
 
             col++;
-            if(col == gp.maxWorldCol) {
+            if(col == gp.getMaxWorldCol()) {
                 col = 0;
                 row++;
             }
@@ -100,10 +100,10 @@ public class PathFinder {
             if (col - 1 >= 0) {
                 openNode(node[row][col - 1]);
             }
-            if (row + 1 < gp.maxWorldRow) {
+            if (row + 1 < gp.getMaxWorldRow()) {
                 openNode(node[row + 1][col]);
             }
-            if (col + 1 < gp.maxWorldCol) {
+            if (col + 1 < gp.getMaxWorldCol()) {
                 openNode(node[row][col + 1]);
             }
             // Tim node tot nhat

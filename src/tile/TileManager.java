@@ -105,7 +105,7 @@ public class TileManager {
             tile[15].image = ImageIO.read(getClass().getResourceAsStream("/tiles/015.png"));
 
             tile[16] = new Tile();
-            tile[16].image = ImageIO.read(getClass().getResourceAsStream("/tiles/016.png"));
+            tile[16].image = ImageIO.read(getClass().getResourceAsStream("/tiles/016z.png"));
             tile[16].collision = true;
 
             tile[17] = new Tile();
@@ -210,7 +210,7 @@ public class TileManager {
                 // 🔸 Nếu vượt ngoài bản đồ thì lấy tile mặc định
                 if (worldRow < 0 || worldRow >= gp.getMaxWorldRow() ||
                         worldCol < 0 || worldCol >= gp.getMaxWorldCol()) {
-                    if(gp.currentMap == gp.map_1 || gp.currentMap == gp.map_2 || gp.currentMap == gp.map_3)   tileNum = 19; // tile mặc định, ví dụ: cỏ
+                    if(gp.getCurrentMap() == gp.getMap_1() || gp.getCurrentMap() == gp.getMap_2() || gp.getCurrentMap() == gp.getMap_3())   tileNum = 19; // tile mặc định, ví dụ: cỏ
                     else tileNum = 0;
                 } else {
                     tileNum = mapFromFile[worldRow][worldCol];

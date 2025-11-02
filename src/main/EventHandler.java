@@ -7,6 +7,7 @@ public class EventHandler {
     Rectangle eventRect;
     int eventRectDefaultX, eventRectDefaultY;
     public int loadMapCounter = 0;
+    public boolean loadMapMessage = false;
     public EventHandler(GamePanel gp) {
         this.gp = gp;
         eventRect = new Rectangle();
@@ -21,126 +22,209 @@ public class EventHandler {
 //        if(hit(27, 16, "right"))    damagePit(gp.dialogueState);
 //        if(hit(23, 12, "up"))   healHeart(gp.dialogueState);
 
-        if(gp.currentMap.equals(gp.map_1) && hit(40, 35, "up") && gp.teleSet == false) {
-            System.out.println(gp.checkGate);
-            gp.tmpMap = gp.map_2;
-            mapTele(gp.dialogueState);
-        }
-        if(gp.currentMap.equals(gp.map_2) && hit(3, 3, "up") && gp.teleSet == false) {
-            System.out.println(gp.checkGate);
-            gp.tmpMap = gp.map_1;
-            mapTele(gp.dialogueState);
-        }
+        if(gp.getCurrentMap().equals(gp.getMap_1()) && hit(40, 35, "up") && gp.getTeleSet() == false) {
 
-        if(gp.currentMap.equals(gp.map_2) && hit(46, 46, "down") && gp.teleSet == false) {
-            System.out.println(gp.checkGate);
-            gp.tmpMap = gp.map_3;
-            mapTele(gp.dialogueState);
+//            System.out.println(gp.checkGate);
+            if(gp.getPlayer().hasKey >= 1) {
+                gp.setTmpMap(gp.getMap_2());
+                mapTele(gp.getDialogueState());
+            }
+            else {
+                if(loadMapMessage == false) {
+                    gp.ui.addMessage("You don't have key");
+                    loadMapMessage = true;
+                    loadMapCounter = 0;
+                }
+            }
         }
-        if(gp.currentMap.equals(gp.map_3) && hit(20, 2, "up") && gp.teleSet == false) {
-            System.out.println(gp.checkGate);
-            gp.tmpMap = gp.map_2;
-            mapTele(gp.dialogueState);
+        if(gp.getCurrentMap().equals(gp.getMap_2()) && hit(3, 3, "up") && gp.getTeleSet() == false) {
+//            System.out.println(gp.checkGate);
+            gp.setTmpMap(gp.getMap_1());
+            mapTele(gp.getDialogueState());
         }
-        if(gp.currentMap.equals(gp.map_3) && hit(28, 31, "down") && gp.teleSet == false) {
-            System.out.println(gp.checkGate);
-            gp.tmpMap = gp.map_1;
-            mapTele(gp.dialogueState);
+        if(gp.getCurrentMap().equals(gp.getMap_2()) && hit(46, 46, "down") && gp.getTeleSet() == false) {
+//            System.out.println(gp.checkGate);
+            gp.setTmpMap(gp.getMap_3());
+            mapTele(gp.getDialogueState());
         }
-        if(gp.currentMap.equals(gp.map_1) && hit(3, 17, "up") && gp.teleSet == false) {
-            System.out.println(gp.checkGate);
-            gp.tmpMap = gp.map_3;
-            mapTele(gp.dialogueState);
+        if(gp.getCurrentMap().equals(gp.getMap_3()) && hit(20, 2, "up") && gp.getTeleSet() == false) {
+//            System.out.println(gp.checkGate);
+            gp.setTmpMap(gp.getMap_2());
+            mapTele(gp.getDialogueState());
         }
-        if(gp.currentMap.equals(gp.map_1) && hit(43, 5, "up") && gp.teleSet == false) {
-            System.out.println(gp.checkGate);
-            gp.tmpMap = gp.map_4;
-            mapTele(gp.dialogueState);
+        if(gp.getCurrentMap().equals(gp.getMap_3()) && hit(28, 31, "down") && gp.getTeleSet() == false) {
+//            System.out.println(gp.checkGate);
+            gp.setTmpMap(gp.getMap_1());
+            mapTele(gp.getDialogueState());
         }
-        if(gp.currentMap.equals(gp.map_4) && hit(2, 2, "up") && gp.teleSet == false) {
-            System.out.println(gp.checkGate);
-            gp.tmpMap = gp.map_1;
-            mapTele(gp.dialogueState);
+        if(gp.getCurrentMap().equals(gp.getMap_1()) && hit(3, 17, "up") && gp.getTeleSet() == false) {
+
+//            System.out.println(gp.checkGate);
+            if(gp.getPlayer().hasKey >= 1) {
+                gp.setTmpMap(gp.getMap_3());
+                mapTele(gp.getDialogueState());
+            }
+            else {
+                if(loadMapMessage == false) {
+                    gp.ui.addMessage("You don't have key");
+                    loadMapMessage = true;
+                    loadMapCounter = 0;
+                }
+            }
         }
-        if(gp.currentMap.equals(gp.map_4) && hit(31, 45, "left") && gp.teleSet == false) {
-            System.out.println(gp.checkGate);
-            gp.tmpMap = gp.map_5;
-            mapTele(gp.dialogueState);
+        if(gp.getCurrentMap().equals(gp.getMap_1()) && hit(43, 5, "up") && gp.getTeleSet() == false) {
+
+//            System.out.println(gp.checkGate);
+            if(gp.getPlayer().hasKey >= 1) {
+                gp.setTmpMap(gp.getMap_4());
+                mapTele(gp.getDialogueState());
+            }
+            else {
+                if(loadMapMessage == false) {
+                    gp.ui.addMessage("You don't have key");
+                    loadMapMessage = true;
+                    loadMapCounter = 0;
+                }
+            }
         }
-        if(gp.currentMap.equals(gp.map_5) && hit(24, 1, "up") && gp.teleSet == false) {
-            System.out.println(gp.checkGate);
-            gp.tmpMap = gp.map_4;
-            mapTele(gp.dialogueState);
+        if(gp.getCurrentMap().equals(gp.getMap_4()) && hit(2, 2, "up") && gp.getTeleSet() == false) {
+//            System.out.println(gp.checkGate);
+            gp.setTmpMap(gp.getMap_1());
+            mapTele(gp.getDialogueState());
         }
-        if(gp.currentMap.equals(gp.map_5) && hit(24, 44, "right") && gp.teleSet == false) {
-            System.out.println(gp.checkGate);
-            gp.tmpMap = gp.map_6;
-            mapTele(gp.dialogueState);
+        if(gp.getCurrentMap().equals(gp.getMap_4()) && hit(31, 45, "left") && gp.getTeleSet() == false) {
+//            System.out.println(gp.checkGate);
+            if(gp.getPlayer().hasKey >= 2) {
+                gp.setTmpMap(gp.getMap_5());
+                mapTele(gp.getDialogueState());
+            }
+            else {
+                if(loadMapMessage == false) {
+                    gp.ui.addMessage("You don't have key");
+                    loadMapMessage = true;
+                    loadMapCounter = 0;
+                }
+            }
         }
-        if(gp.currentMap.equals(gp.map_6) && hit(1, 24, "left") && gp.teleSet == false) {
-            System.out.println(gp.checkGate);
-            gp.tmpMap = gp.map_5;
-            mapTele(gp.dialogueState);
+        if(gp.getCurrentMap().equals(gp.getMap_5()) && hit(24, 1, "up") && gp.getTeleSet() == false) {
+//            System.out.println(gp.checkGate);
+            gp.setTmpMap(gp.getMap_4());
+            mapTele(gp.getDialogueState());
         }
-        if(gp.currentMap.equals(gp.map_6) && hit(47, 3, "right") && gp.teleSet == false) {
-            System.out.println(gp.checkGate);
-            gp.tmpMap = gp.map_7;
-            mapTele(gp.dialogueState);
+        if(gp.getCurrentMap().equals(gp.getMap_5()) && hit(24, 44, "right") && gp.getTeleSet() == false) {
+//            System.out.println(gp.checkGate);
+            if(gp.getPlayer().hasKey >= 3) {
+                gp.setTmpMap(gp.getMap_6());
+                mapTele(gp.getDialogueState());
+            }
+            else {
+                if(loadMapMessage == false) {
+                    gp.ui.addMessage("You don't have key");
+                    loadMapMessage = true;
+                    loadMapCounter = 0;
+                }
+            }
         }
-        if(gp.currentMap.equals(gp.map_7) && hit(24, 5, "up") && gp.teleSet == false) {
-            System.out.println(gp.checkGate);
-            gp.tmpMap = gp.map_6;
-            mapTele(gp.dialogueState);
+        if(gp.getCurrentMap().equals(gp.getMap_6()) && hit(1, 24, "left") && gp.getTeleSet() == false) {
+//            System.out.println(gp.checkGate);
+            gp.setTmpMap(gp.getMap_5());
+            mapTele(gp.getDialogueState());
         }
-        if(gp.currentMap.equals(gp.map_7) && hit(48, 48, "right") && gp.teleSet == false) {
-            System.out.println(gp.checkGate);
-            gp.tmpMap = gp.map_8;
-            mapTele(gp.dialogueState);
+        if(gp.getCurrentMap().equals(gp.getMap_6()) && hit(47, 3, "right") && gp.getTeleSet() == false) {
+//            System.out.println(gp.checkGate);
+            if(gp.getPlayer().hasKey >= 4) {
+                gp.setTmpMap(gp.getMap_7());
+                mapTele(gp.getDialogueState());
+            }
+            else {
+                if(loadMapMessage == false) {
+                    gp.ui.addMessage("You don't have key");
+                    loadMapMessage = true;
+                    loadMapCounter = 0;
+                }
+            }
         }
-        if(gp.currentMap.equals(gp.map_8) && hit(1, 8, "left") && gp.teleSet == false) {
-            System.out.println(gp.checkGate);
-            gp.tmpMap = gp.map_7;
-            mapTele(gp.dialogueState);
+        if(gp.getCurrentMap().equals(gp.getMap_7()) && hit(24, 5, "up") && gp.getTeleSet() == false) {
+//            System.out.println(gp.checkGate);
+            gp.setTmpMap(gp.getMap_6());
+            mapTele(gp.getDialogueState());
         }
-        if(gp.currentMap.equals(gp.map_8) && hit(48, 43, "right") && gp.teleSet == false) {
-            System.out.println(gp.checkGate);
-            gp.tmpMap = gp.map_9;
-            mapTele(gp.dialogueState);
+        if(gp.getCurrentMap().equals(gp.getMap_7()) && hit(48, 48, "right") && gp.getTeleSet() == false) {
+//            System.out.println(gp.checkGate);
+            if(gp.getPlayer().hasKey >= 5) {
+                gp.setTmpMap(gp.getMap_8());
+                mapTele(gp.getDialogueState());
+            }
+            else {
+                if(loadMapMessage == false) {
+                    gp.ui.addMessage("You don't have key");
+                    loadMapMessage = true;
+                    loadMapCounter = 0;
+                }
+            }
         }
-        if(gp.currentMap.equals(gp.map_9) && hit(48, 1, "up") && gp.teleSet == false) {
-            System.out.println(gp.checkGate);
-            gp.tmpMap = gp.map_8;
-            mapTele(gp.dialogueState);
+        if(gp.getCurrentMap().equals(gp.getMap_8()) && hit(1, 8, "left") && gp.getTeleSet() == false) {
+//            System.out.println(gp.checkGate);
+            gp.setTmpMap(gp.getMap_7());
+            mapTele(gp.getDialogueState());
         }
-        if(gp.currentMap.equals(gp.map_9) && hit(48, 31, "right") && gp.teleSet == false) {
-            System.out.println(gp.checkGate);
-            gp.tmpMap = gp.map_10;
-            mapTele(gp.dialogueState);
+        if(gp.getCurrentMap().equals(gp.getMap_8()) && hit(48, 43, "right") && gp.getTeleSet() == false) {
+//            System.out.println(gp.checkGate);
+            if(gp.getPlayer().hasKey >= 6) {
+                gp.setTmpMap(gp.getMap_9());
+                mapTele(gp.getDialogueState());
+            }
+            else {
+                if(loadMapMessage == false) {
+                    gp.ui.addMessage("You don't have key");
+                    loadMapMessage = true;
+                    loadMapCounter = 0;
+                }
+            }
         }
-        if(gp.currentMap.equals(gp.map_10) && hit(1, 25, "left") && gp.teleSet == false) {
-            System.out.println(gp.checkGate);
-            gp.tmpMap = gp.map_9;
-            mapTele(gp.dialogueState);
+        if(gp.getCurrentMap().equals(gp.getMap_9()) && hit(48, 1, "up") && gp.getTeleSet() == false) {
+//            System.out.println(gp.checkGate);
+            gp.setTmpMap(gp.getMap_8());
+            mapTele(gp.getDialogueState());
+        }
+        if(gp.getCurrentMap().equals(gp.getMap_9()) && hit(48, 31, "right") && gp.getTeleSet() == false) {
+//            System.out.println(gp.checkGate);
+            if(gp.getPlayer().hasKey >= 7) {
+                gp.setTmpMap(gp.getMap_10());
+                mapTele(gp.getDialogueState());
+            }
+            else {
+                if(loadMapMessage == false) {
+                    gp.ui.addMessage("You don't have key");
+                    loadMapMessage = true;
+                    loadMapCounter = 0;
+                }
+            }
+        }
+        if(gp.getCurrentMap().equals(gp.getMap_10()) && hit(1, 25, "left") && gp.getTeleSet() == false) {
+//            System.out.println(gp.checkGate);
+            gp.setTmpMap(gp.getMap_9());
+            mapTele(gp.getDialogueState());
         }
 
     }
     public void healHeart(int gameState){
         if(gp.keyHandler.enterPressed == true) {
-            gp.gameState = gameState;
+            gp.setGameState(gameState);
             gp.ui.currentDialogue = "1 coc nuoc da'i vao mom";
             gp.getPlayer().life++;
         }
         gp.keyHandler.enterPressed = false;
     }
     public void damagePit(int gameState){
-        gp.gameState = gameState;
+        gp.setGameState(gameState);
         gp.ui.currentDialogue = "Dam trung bay roi thang ngu";
         gp.getPlayer().life--;
     }
     public void mapTele(int gameState) {
-        gp.gameState = gameState;
+        gp.setGameState(gameState);
         gp.ui.currentDialogue = "Ban co muon chac dich chuyen toi me cung khong?";
-        gp.checkGate = true;
+        gp.setCheckGate(true);
     }
     public boolean hit(int eventCol, int eventRow, String reqDirection) {
         boolean hit = false;

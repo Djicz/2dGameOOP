@@ -2,6 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import objects.newSkill;
 import objects.object_fireball;
 
 import java.awt.*;
@@ -16,6 +17,7 @@ public class Player extends Entity {
     public boolean hpQC, manaQC;
     public int hpQCounter, manaQCounter;
     public boolean projectSkill;
+    public int hasKey;
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
         this.keyH = keyH;
@@ -39,7 +41,7 @@ public class Player extends Entity {
         dexterity = 1;
         exp = 1;
         nextLevelExp = 5;
-        coin = 0;
+        coin = 100000;
         currentWeapon = null;
         currentShield = null;
         attack = getPlayerAttack();
@@ -52,12 +54,12 @@ public class Player extends Entity {
 
     }
     public int getPlayerAttack() {
-        if(currentWeapon != null)   return currentWeapon.stat + strength * level; // Attack = chi so cua vu khi + suc manh * level
+        if(currentWeapon != null)   return currentWeapon.stat + strength * 2; // Attack = chi so cua vu khi + suc manh
         return strength * level;
 
     }
     public int getPlayerDefense() {
-        if(currentShield != null)   return currentShield.stat + dexterity * level;
+        if(currentShield != null)   return currentShield.stat + dexterity * 2;
         return dexterity * level;
     }
 
@@ -148,6 +150,7 @@ public class Player extends Entity {
         manaQC = false;
         hpQCounter = 0;
         manaQCounter = 0;
+        hasKey = 0;
     }
 
     public void update() {
@@ -357,9 +360,14 @@ public class Player extends Entity {
         if(exp >= nextLevelExp) {
             ++level;
             exp -= nextLevelExp;
+            maxLife += 100;
+            life = maxLife;
+            maxStamina += 100;
+            stamina = maxStamina;
+            strength += 1;
+            dexterity += 1;
+            gp.ui.addMessage("Level Up!");
         }
-        strength = level * 2;
-        dexterity = level * 2;
         nextLevelExp = level * 5;
         attack = getPlayerAttack();
         defense = getPlayerDefense();
@@ -619,7 +627,10 @@ public class Player extends Entity {
                 gp.monster[i].drawHP = true;
                 gp.monster[i].drawHPCounter = 0;
                 if(knockBackPower > 0)  knockBack(gp.monster[i], knockBackPower);
-                gp.monster[i].life -= attack * 10;
+                int damage = attack * 10 - gp.monster[i].defense;
+                if(damage <= 0) damage = 1;
+                gp.monster[i].life -= damage;
+                gp.ui.addMessage(damage + " damage!");
                 gp.monster[i].immortalState = true;
                 if(gp.monster[i].monsterFlag == false)   gp.monster[i].monsterFlag = true;
                 if(gp.monster[i].life <= 0) {
@@ -631,18 +642,20 @@ public class Player extends Entity {
     }
     public void pickUpObject(int index) {
         if(index != 999) {
-            gp.ui.showMessage("Ban da nhat duoc vat pham: " + gp.obj[index].name);
+            gp.ui.addMessage("You have picked up the item: " + gp.obj[index].name);
+            gp.getPlayer().items.add(gp.obj[index]);
             gp.obj[index] = null;
+
         }
     }
 
     public void interactNPC(int index) {
         if(index != 999) {
             if(keyH.enterPressed == true) {
-                gp.gameState = gp.dialogueState;
+                gp.setGameState(gp.getDialogueState());
                 gp.npc[index].speak();
                 if(gp.npc[index].name.equals("shop")){
-                    gp.callWithShop = true;
+                    gp.setCallWithShop(true);
                 }
                 keyH.enterPressed = false;
             }
@@ -655,12 +668,13 @@ public class Player extends Entity {
         entity.knockBack = true;
     }
     public void soloMonster(int index) {
-        if(index != 999) {
-            if(gp.getPlayer().immortalState == false) {
-                gp.getPlayer().life -= 10;
-                gp.getPlayer().immortalState = true;
-            }
-        }
+//        if(index != 999) {
+//            if(gp.getPlayer().immortalState == false) {
+//                gp.getPlayer().life -= 10;
+//                gp.ui.addMessage("-10 HP");
+//                gp.getPlayer().immortalState = true;
+//            }
+//        }
     }
 
     public void draw(Graphics2D g2, int tileSize) {
@@ -963,6 +977,7 @@ public class Player extends Entity {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f)); // Lam mo 70% nhan vat khi o immortalState
         }
         g2.drawImage(image, tmpScreenX, tmpScreenY, tmpWidth, tmpHeight, null); // In image ra man hinh ( observe ??? )
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // Reset lai de cac component khac khong bi lam mo theo
     }
 
 }

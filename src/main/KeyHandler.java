@@ -46,17 +46,17 @@ public class KeyHandler implements KeyListener {
             shiftPressed = true;
         }
         if(code == KeyEvent.VK_C) {
-            if(gp.gameState == gp.gameContinue) {
-                gp.gameState = gp.characterState;
+            if(gp.getGameState() == gp.getGameContinue()) {
+                gp.setGameState(gp.getCharacterState());
 
             }
-            else if(gp.gameState == gp.characterState) {
+            else if(gp.getGameState() == gp.getCharacterState()) {
                 gp.ui.slotNumX = 0;
                 gp.ui.slotNumY = 0;
-                gp.gameState = gp.gameContinue;
+                gp.setGameState(gp.getGameContinue());
             }
         }
-        if(gp.gameState == gp.titleState) {
+        if(gp.getGameState() == gp.getTitleState()) {
             if(code == KeyEvent.VK_W){
                 gp.ui.titleIn--;
             }
@@ -73,7 +73,7 @@ public class KeyHandler implements KeyListener {
             if(code == KeyEvent.VK_ENTER) {
                 if(gp.ui.titleIn == 1) {
                     // New game
-                    gp.gameState = gp.gameContinue;
+                    gp.setGameState(gp.getGameContinue());
                 }
                 else if(gp.ui.titleIn == 2) {
                     // Load game
@@ -85,27 +85,27 @@ public class KeyHandler implements KeyListener {
             }
         }
         if(code == KeyEvent.VK_P) {
-            if(gp.gameState == gp.gameContinue) {
-                gp.gameState = gp.gamePause;
+            if(gp.getGameState() == gp.getGameContinue()) {
+                gp.setGameState(gp.getGamePause());
             }
-            else if(gp.gameState == gp.gamePause) {
-                gp.gameState = gp.gameContinue;
+            else if(gp.getGameState() == gp.getGamePause()) {
+                gp.setGameState(gp.getGameContinue());;
             }
         }
         if(code == KeyEvent.VK_E) {
-            if(gp.gameState == gp.dialogueState) {
-                gp.gameState = gp.gameContinue;
+            if(gp.getGameState() == gp.getDialogueState()) {
+                gp.setGameState(gp.getGameContinue());;
             }
             gp.getPlayer().attackMode = true;
         }
 
         if(code == KeyEvent.VK_W){
 
-            if(gp.gameState == gp.characterState) {
+            if(gp.getGameState() == gp.getCharacterState()) {
                 if(gp.ui.slotNumY > 0)  gp.ui.slotNumY--;
                 else    gp.ui.slotNumY = 5;
             }
-            if(gp.gameState == gp.shopState) {
+            if(gp.getGameState() == gp.getShopState()) {
                 if(gp.ui.slotNumY > 0)  gp.ui.slotNumY--;
                 else    gp.ui.slotNumY = 7;
             }
@@ -114,13 +114,13 @@ public class KeyHandler implements KeyListener {
 
         if(code == KeyEvent.VK_S){
 
-            if(gp.gameState == gp.characterState) {
+            if(gp.getGameState() == gp.getCharacterState()) {
                 if(gp.ui.slotNumY < 5)  gp.ui.slotNumY++;
                 else {
                     gp.ui.slotNumY = 0;
                 }
             }
-            if(gp.gameState == gp.shopState) {
+            if(gp.getGameState() == gp.getShopState()) {
                 if(gp.ui.slotNumY < 7)  gp.ui.slotNumY++;
                 else {
                     gp.ui.slotNumY = 0;
@@ -132,7 +132,7 @@ public class KeyHandler implements KeyListener {
 
         if(code == KeyEvent.VK_A){
 
-            if(gp.gameState == gp.characterState) {
+            if(gp.getGameState() == gp.getCharacterState()) {
                 if(gp.ui.slotNumX > 0)  gp.ui.slotNumX--;
                 else if(gp.ui.slotNumX == 0) {
                     if(gp.ui.slotNumY == 0) {
@@ -146,7 +146,7 @@ public class KeyHandler implements KeyListener {
                 }
 
             }
-            if(gp.gameState == gp.shopState) {
+            if(gp.getGameState() == gp.getShopState()) {
                 if(gp.ui.slotNumX > 0)  gp.ui.slotNumX--;
                 else if(gp.ui.slotNumX == 0) {
                     if(gp.ui.slotNumY == 0) {
@@ -165,7 +165,7 @@ public class KeyHandler implements KeyListener {
 
         if(code == KeyEvent.VK_D){
 
-            if(gp.gameState == gp.characterState) {
+            if(gp.getGameState() == gp.getCharacterState()) {
                 if(gp.ui.slotNumX < 4)  gp.ui.slotNumX++;
                 else if(gp.ui.slotNumX == 4){
                     if(gp.ui.slotNumY < 5){
@@ -179,7 +179,7 @@ public class KeyHandler implements KeyListener {
                     }
                 }
             }
-            if(gp.gameState == gp.shopState) {
+            if(gp.getGameState() == gp.getShopState()) {
                 if(gp.ui.slotNumX < 6)  gp.ui.slotNumX++;
                 else if(gp.ui.slotNumX == 6){
                     if(gp.ui.slotNumY < 7){

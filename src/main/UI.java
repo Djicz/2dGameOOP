@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 // class giao dien nguoi dung (in ra cac chi so phu tren man hinh)
 public class UI {
@@ -14,9 +15,6 @@ public class UI {
     GamePanel gp;
     public Font arial;
     public Font maruMonica;
-    public boolean messageOn = false;
-    public String message = "";
-    public int messageCounter = 0;
     public int titleIn = 1;
     public int slotNumX = 0;
     public int slotNumY = 0;
@@ -26,10 +24,11 @@ public class UI {
     public int currentManaCd = cdManaMax;
     public int reTryCounter = 1;
     public int delayTime = 10;
-    public void showMessage(String text) {
-        g2.setFont(maruMonica.deriveFont(Font.PLAIN, 15));
-        message = text;
-        messageOn = true;
+    ArrayList<String> messageList = new ArrayList<>();
+    ArrayList<Integer> messageCounterList = new ArrayList<>();
+    public void addMessage(String text) {
+        messageList.add(text);
+        messageCounterList.add(0);
     }
     public Graphics2D g2;
     public String currentDialogue = "";
@@ -49,131 +48,128 @@ public class UI {
     // In ra man hinh
     public void draw(Graphics2D g2) {
         this.g2 = g2;
-        if(gp.gameState == gp.titleState) {
+        if(gp.getGameState() == gp.getTitleState()) {
             drawTitleScreen();
-            gp.callWithShop = false;
-            gp.checkGate = false;
+
         }
-        if(gp.gameState == gp.gameContinue) {
+        if(gp.getGameState() == gp.getGameContinue()) {
+            gp.setCallWithShop(false);
+            gp.setCheckGate(false);
             drawSpItems();
 //            drawPlayerLife();
             drawHpAndStamina();
-            if(messageOn == true) {
-                g2.setFont(arial);
-                g2.setColor(Color.WHITE);
-                g2.drawString(message, gp.getTileSize() / 2, gp.getTileSize() * 6);
-            }
+            drawMessage();
             drawPosition();
             if(gp.getPlayer().life <= 0) {
-                gp.gameState = gp.gameOverState;
+                gp.setGameState(gp.getGameOverState());
             }
         }
-        if(gp.gameState == gp.gamePause) {
+        if(gp.getGameState() == gp.getGamePause()) {
             drawPause(g2);
         }
-        if(gp.gameState == gp.dialogueState) {
+        if(gp.getGameState() == gp.getDialogueState()) {
 //            drawPlayerLife();
             drawHpAndStamina();
             drawDialogueScreen();
-            if(gp.callWithShop == true && gp.keyHandler.enterPressed == true) {
+            if(gp.isCallWithShop() == true && gp.keyHandler.enterPressed == true) {
                 slotNumX = 0;
                 slotNumY = 0;
-                gp.gameState = gp.shopState;
-                gp.callWithShop = false;
+                gp.setGameState(gp.getShopState());
+                gp.setCallWithShop(false);
                 gp.keyHandler.enterPressed = false;
             }
-            if(gp.checkGate == true && gp.keyHandler.enterPressed == true) {
-                gp.gameState = gp.gameContinue;
-                gp.tileM.loadMap(gp.tmpMap);
-                gp.teleSet = true;
-                if(gp.currentMap == gp.map_1 && gp.tmpMap == gp.map_2) {
+            if(gp.isCheckGate() == true && gp.keyHandler.enterPressed == true) {
+                gp.setGameState(gp.getGameContinue());
+                gp.tileM.loadMap(gp.getTmpMap());
+                gp.setTeleSet(true);
+                if(gp.getCurrentMap().equals(gp.getMap_1()) && gp.getTmpMap().equals(gp.getMap_2())) {
                     gp.getPlayer().worldX = gp.getTileSize() * 3;
                     gp.getPlayer().worldY = gp.getTileSize() * 3;
                 }
-                if(gp.currentMap == gp.map_2 && gp.tmpMap == gp.map_1) {
+                if(gp.getCurrentMap().equals(gp.getMap_2()) && gp.getTmpMap().equals(gp.getMap_1())) {
                     gp.getPlayer().worldX = gp.getTileSize() * 40;
                     gp.getPlayer().worldY = gp.getTileSize() * 35;
                 }
-                if(gp.currentMap == gp.map_2 && gp.tmpMap == gp.map_3) {
+                if(gp.getCurrentMap().equals(gp.getMap_2()) && gp.getTmpMap().equals(gp.getMap_3())) {
                     gp.getPlayer().worldX = gp.getTileSize() * 20;
                     gp.getPlayer().worldY = gp.getTileSize() * 2;
                 }
-                if(gp.currentMap == gp.map_3 && gp.tmpMap == gp.map_2) {
+                if(gp.getCurrentMap().equals(gp.getMap_3()) && gp.getTmpMap().equals(gp.getMap_2())) {
                     gp.getPlayer().worldX = gp.getTileSize() * 46;
                     gp.getPlayer().worldY = gp.getTileSize() * 46;
                 }
-                if(gp.currentMap == gp.map_3 && gp.tmpMap == gp.map_1) {
+                if(gp.getCurrentMap().equals(gp.getMap_3()) && gp.getTmpMap().equals(gp.getMap_1())) {
                     gp.getPlayer().worldX = gp.getTileSize() * 3;
                     gp.getPlayer().worldY = gp.getTileSize() * 17;
                 }
-                if(gp.currentMap == gp.map_1 && gp.tmpMap == gp.map_3) {
+                if(gp.getCurrentMap().equals(gp.getMap_1()) && gp.getTmpMap().equals(gp.getMap_3())) {
                     gp.getPlayer().worldX = gp.getTileSize() * 28;
                     gp.getPlayer().worldY = gp.getTileSize() * 31;
                 }
-                if(gp.currentMap == gp.map_1 && gp.tmpMap == gp.map_4) {
+                if(gp.getCurrentMap().equals(gp.getMap_1()) && gp.getTmpMap().equals(gp.getMap_4())) {
                     gp.getPlayer().worldX = gp.getTileSize() * 2;
                     gp.getPlayer().worldY = gp.getTileSize() * 2;
                 }
-                if(gp.currentMap == gp.map_4 && gp.tmpMap == gp.map_1) {
+                if(gp.getCurrentMap().equals(gp.getMap_4()) && gp.getTmpMap().equals(gp.getMap_1())) {
                     gp.getPlayer().worldX = gp.getTileSize() * 43;
                     gp.getPlayer().worldY = gp.getTileSize() * 5;
                 }
-                if(gp.currentMap == gp.map_4 && gp.tmpMap == gp.map_5) {
+                if(gp.getCurrentMap().equals(gp.getMap_4()) && gp.getTmpMap().equals(gp.getMap_5())) {
                     gp.getPlayer().worldX = gp.getTileSize() * 24;
                     gp.getPlayer().worldY = gp.getTileSize() * 1;
                 }
-                if(gp.currentMap == gp.map_5 && gp.tmpMap == gp.map_4) {
+                if(gp.getCurrentMap().equals(gp.getMap_5()) && gp.getTmpMap().equals(gp.getMap_4())) {
                     gp.getPlayer().worldX = gp.getTileSize() * 31;
                     gp.getPlayer().worldY = gp.getTileSize() * 45;
                 }
-                if(gp.currentMap == gp.map_5 && gp.tmpMap == gp.map_6) {
+                if(gp.getCurrentMap().equals(gp.getMap_5()) && gp.getTmpMap().equals(gp.getMap_6())) {
                     gp.getPlayer().worldX = gp.getTileSize() * 1;
                     gp.getPlayer().worldY = gp.getTileSize() * 24;
                 }
-                if(gp.currentMap == gp.map_6 && gp.tmpMap == gp.map_5) {
+                if(gp.getCurrentMap().equals(gp.getMap_6()) && gp.getTmpMap().equals(gp.getMap_5())) {
                     gp.getPlayer().worldX = gp.getTileSize() * 24;
                     gp.getPlayer().worldY = gp.getTileSize() * 44;
                 }
-                if(gp.currentMap == gp.map_6 && gp.tmpMap == gp.map_7) {
+                if(gp.getCurrentMap().equals(gp.getMap_6()) && gp.getTmpMap().equals(gp.getMap_7())) {
                     gp.getPlayer().worldX = gp.getTileSize() * 24;
                     gp.getPlayer().worldY = gp.getTileSize() * 5;
                 }
-                if(gp.currentMap == gp.map_7 && gp.tmpMap == gp.map_6) {
+                if(gp.getCurrentMap().equals(gp.getMap_7()) && gp.getTmpMap().equals(gp.getMap_6())) {
                     gp.getPlayer().worldX = gp.getTileSize() * 47;
                     gp.getPlayer().worldY = gp.getTileSize() * 3;
                 }
-                if(gp.currentMap == gp.map_7 && gp.tmpMap == gp.map_8) {
+                if(gp.getCurrentMap().equals(gp.getMap_7()) && gp.getTmpMap().equals(gp.getMap_8())) {
                     gp.getPlayer().worldX = gp.getTileSize() * 1;
                     gp.getPlayer().worldY = gp.getTileSize() * 8;
                 }
-                if(gp.currentMap == gp.map_8 && gp.tmpMap == gp.map_7) {
+                if(gp.getCurrentMap().equals(gp.getMap_8()) && gp.getTmpMap().equals(gp.getMap_7())) {
                     gp.getPlayer().worldX = gp.getTileSize() * 48;
                     gp.getPlayer().worldY = gp.getTileSize() * 48;
                 }
-                if(gp.currentMap == gp.map_8 && gp.tmpMap == gp.map_9) {
+                if(gp.getCurrentMap().equals(gp.getMap_8()) && gp.getTmpMap().equals(gp.getMap_9())) {
                     gp.getPlayer().worldX = gp.getTileSize() * 48;
                     gp.getPlayer().worldY = gp.getTileSize() * 1;
                 }
-                if(gp.currentMap == gp.map_9 && gp.tmpMap == gp.map_8) {
+                if(gp.getCurrentMap().equals(gp.getMap_9()) && gp.getTmpMap().equals(gp.getMap_8())) {
                     gp.getPlayer().worldX = gp.getTileSize() * 48;
                     gp.getPlayer().worldY = gp.getTileSize() * 43;
                 }
-                if(gp.currentMap == gp.map_9 && gp.tmpMap == gp.map_10) {
+                if(gp.getCurrentMap().equals(gp.getMap_9()) && gp.getTmpMap().equals(gp.getMap_10())) {
                     gp.getPlayer().worldX = gp.getTileSize() * 1;
                     gp.getPlayer().worldY = gp.getTileSize() * 25;
                 }
-                if(gp.currentMap == gp.map_10 && gp.tmpMap == gp.map_9) {
+                if(gp.getCurrentMap().equals(gp.getMap_10()) && gp.getTmpMap().equals(gp.getMap_9())) {
                     gp.getPlayer().worldX = gp.getTileSize() * 48;
                     gp.getPlayer().worldY = gp.getTileSize() * 31;
                 }
-                gp.currentMap = gp.tmpMap;
+                gp.setCurrentMap(gp.getTmpMap());
                 gp.setUpGame();
 
-                gp.checkGate = false;
+                gp.setCheckGate(false);
                 gp.keyHandler.enterPressed = false;
             }
         }
-        if(gp.gameState == gp.characterState) {
+        if(gp.getGameState() == gp.getCharacterState()) {
 
             drawCharacterStatus();
             drawInventory();
@@ -181,53 +177,69 @@ public class UI {
                 int itemsNum = 5 * slotNumY + slotNumX;
                 if (itemsNum < gp.getPlayer().items.size()) {
                     gp.keyHandler.enterPressed = false;
-                    gp.gameState = gp.characterState_notify;
+                    gp.setGameState(gp.getCharacterState_notify());
                 }
             }
+            if(gp.getPlayer().hasKey == 8) {
+                gp.setGameState(gp.getGameWinState());
+            }
         }
-        if(gp.gameState == gp.shopState) {
+        if(gp.getGameState() == gp.getGameWinState()) {
+            drawCongratulation();
+        }
+        if(gp.getGameState() == gp.getShopState()) {
             drawShop();
             if(gp.keyHandler.escPressed == true) {
-                gp.gameState = gp.gameContinue;
+                gp.setGameState(gp.getGameContinue());
             }
             if(gp.keyHandler.enterPressed == true) {
                 gp.keyHandler.enterPressed = false;
                 int itemsNum = 7 * slotNumY + slotNumX;
                 if(itemsNum < gp.npc[0].items.size()) {
-                    gp.gameState = gp.shopState_notify;
+                    gp.setGameState(gp.getShopState_notify());
                 }
             }
         }
-        if(gp.gameState == gp.shopState_notify) {
+        if(gp.getGameState() == gp.getShopState_notify()) {
             drawShop();
-            drawNotify();
+            int itemsNum = 7 * slotNumY + slotNumX;
+            if(gp.getPlayer().coin < gp.npc[0].items.get(itemsNum).price) {
+                drawNotEnough();
+            }
+            else {
+                drawNotify();
+            }
             if(gp.keyHandler.enterPressed == true) {
-                int itemsNum = 7 * slotNumY + slotNumX;
-                if(itemsNum < gp.npc[0].items.size()) {
-                    if(gp.npc[0].items.get(itemsNum).type == SuperObject.weaponItems) {
+                if(gp.getPlayer().coin > gp.npc[0].items.get(itemsNum).price) {
+                    if (gp.npc[0].items.get(itemsNum).type == SuperObject.weaponItems || gp.npc[0].items.get(itemsNum).type == SuperObject.shieldItems) {
                         gp.getPlayer().items.add(gp.npc[0].items.get(itemsNum));
                         gp.npc[0].items.remove(itemsNum);
                     }
-                    else if(gp.npc[0].items.get(itemsNum).name.equals("HP Potion")) {
+                    if (gp.npc[0].items.get(itemsNum).name.equals("HP Potion")) {
                         gp.getPlayer().hpQAverage++;
                     }
-                    else if(gp.npc[0].items.get(itemsNum).name.equals("Mana Potion")) {
+                    if (gp.npc[0].items.get(itemsNum).name.equals("Mana Potion")) {
                         gp.getPlayer().manaQAverage++;
                     }
-                    else if(gp.npc[0].items.get(itemsNum).type == SuperObject.skillItems) {
+                    if (gp.npc[0].items.get(itemsNum).type == SuperObject.skillItems) {
                         gp.getPlayer().items.add(gp.npc[0].items.get(itemsNum));
                         gp.npc[0].items.remove(itemsNum);
                     }
+                    if (gp.npc[0].items.get(itemsNum).type == SuperObject.keyItems) {
+                        gp.getPlayer().items.add(gp.npc[0].items.get(itemsNum));
+                        gp.npc[0].items.remove(itemsNum);
+                    }
+                    gp.getPlayer().coin -= gp.npc[0].items.get(itemsNum).price;
                 }
                 gp.keyHandler.enterPressed = false;
-                gp.gameState = gp.shopState;
+                gp.setGameState(gp.getShopState());
             }
             if(gp.keyHandler.escPressed == true) {
                 gp.keyHandler.escPressed = false;
-                gp.gameState = gp.shopState;
+                gp.setGameState(gp.getShopState());
             }
         }
-        if(gp.gameState == gp.characterState_notify) {
+        if(gp.getGameState() == gp.getCharacterState_notify()) {
             drawCharacterStatus();
             drawInventory();
             drawNotify();
@@ -244,20 +256,34 @@ public class UI {
                         }
                         gp.getPlayer().currentWeapon = sword;
                     }
+                    else if (gp.getPlayer().items.get(itemsNum).type == new SuperObject().shieldItems) {
+                        SuperObject shield = gp.getPlayer().items.get(itemsNum);
+                        if(gp.getPlayer().currentShield != null) {
+                            gp.getPlayer().items.set(itemsNum, gp.getPlayer().currentShield);
+                        }
+                        else {
+                            gp.getPlayer().items.remove(itemsNum);
+                        }
+                        gp.getPlayer().currentShield = shield;
+                    }
                     else if(gp.getPlayer().items.get(itemsNum).type == new SuperObject().skillItems) {
                         gp.getPlayer().projectSkill = true;
                         gp.getPlayer().items.remove(itemsNum);
                     }
+                    else if(gp.getPlayer().items.get(itemsNum).type == new SuperObject().keyItems) {
+                        gp.getPlayer().hasKey++;
+                        gp.getPlayer().items.remove(itemsNum);
+                    }
                 }
                 gp.keyHandler.enterPressed = false;
-                gp.gameState = gp.characterState;
+                gp.setGameState(gp.getCharacterState());
             }
             if(gp.keyHandler.escPressed == true) {
                 gp.keyHandler.escPressed = false;
-                gp.gameState = gp.characterState;
+                gp.setGameState(gp.getCharacterState());
             }
         }
-        if(gp.gameState == gp.gameOverState) {
+        if(gp.getGameState() == gp.getGameOverState()) {
             drawRetry();
             ++reTryCounter;
             if(reTryCounter > 60) {
@@ -265,18 +291,43 @@ public class UI {
                 reTryCounter = 0;
             }
             if(delayTime <= 0) {
-                gp.tileM.loadMap(gp.map_1);
+                gp.tileM.loadMap(gp.getMap_1());
                 gp.getPlayer().worldX = gp.getTileSize() * 40;
                 gp.getPlayer().worldY = gp.getTileSize() * 35;
-                gp.currentMap = gp.map_1;
-                gp.tmpMap = gp.map_1;
+                gp.setCurrentMap(gp.getMap_1());
+                gp.setTmpMap(gp.getMap_1());
                 gp.setUpGame();
                 gp.getPlayer().life = gp.getPlayer().maxLife;
                 gp.getPlayer().stamina = gp.getPlayer().maxStamina;
-                gp.gameState = gp.gameContinue;
-
+                gp.setGameState(gp.getGameContinue());
             }
         }
+    }
+    public void drawCongratulation() {
+        String text = "Congratulation!"; // Van ban muon in ra
+        g2.setFont(maruMonica.deriveFont(Font.BOLD, 40));
+        g2.setColor(Color.white);
+        int x = getXInMiddleScreen(text);
+        int y = gp.getScreenHeight() / 2; // Can giua theo truc y
+        g2.drawString(text, x, y); // Ve van ban
+    }
+    public void drawMessage() {
+        int messageX = gp.getTileSize();
+        int messageY = gp.getTileSize() * 4;
+        g2.setFont(maruMonica.deriveFont(Font.BOLD, 20));
+        for(int i = 0; i < messageList.size(); i++) {
+            if(messageList.get(i) != null) {
+                g2.setColor(Color.white);
+                g2.drawString(messageList.get(i), messageX, messageY);
+                messageCounterList.set(i, messageCounterList.get(i) + 1);
+                messageY += 50;
+                if(messageCounterList.get(i) > 180) {
+                    messageList.remove(i);
+                    messageCounterList.remove(i);
+                }
+            }
+        }
+
     }
     public void drawRetry() {
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
@@ -298,6 +349,19 @@ public class UI {
         g2.drawString("Press enter to confirm", gp.getTileSize() * 5 + 15, gp.getTileSize() * 6 + 11);
         g2.drawString("Press ESC to exit", gp.getTileSize() * 5 + 15, gp.getTileSize() * 6 + 35);
 
+    }
+    public void drawNotEnough() {
+        g2.setColor(new Color(0, 0, 0, 150));
+        g2.fillRoundRect(gp.getTileSize() * 5, gp.getTileSize() * 5, gp.getTileSize() * 6, gp.getTileSize() * 2, 10, 10);
+        g2.setStroke(new BasicStroke(2));
+        g2.drawRoundRect(gp.getTileSize() * 5, gp.getTileSize() * 5, gp.getTileSize() * 6, gp.getTileSize() * 2, 10, 10);
+        g2.setFont(maruMonica.deriveFont(Font.PLAIN, 30));
+        g2.setColor(Color.white);
+        g2.drawString("You don't have enough", gp.getTileSize() * 5 + 15, gp.getTileSize() * 5 + 35);
+        g2.drawString("money to buy the item", gp.getTileSize() * 5 + 15, gp.getTileSize() * 5 + 35 + 25);
+        g2.setFont(maruMonica.deriveFont(Font.PLAIN, 10));
+        g2.drawString("Press enter or esc to exit", gp.getTileSize() * 5 + 15, gp.getTileSize() * 6 + 35);
+//        g2.drawString("Press ESC to exit", gp.getTileSize() * 5 + 15, gp.getTileSize() * 6 + 35);
     }
     public void drawPosition() {
         g2.setFont(maruMonica.deriveFont(Font.BOLD, 20));
@@ -384,7 +448,11 @@ public class UI {
             g2.drawRoundRect(xIF, yIF, widthIF, heightIF, 35, 35);
             g2.setFont(maruMonica.deriveFont(Font.PLAIN, 20));
             g2.drawString("[" + gp.npc[0].items.get(slotNumY * 7 + slotNumX).name + "]", xIF + gp.getTileSize() / 4, yIF + gp.getTileSize() / 2);
-            g2.drawString(gp.npc[0].items.get(slotNumY * 7 + slotNumX).information, xIF + gp.getTileSize() / 4, yIF + (gp.getTileSize() * 3) / 2);
+            for(String line : gp.npc[0].items.get(slotNumY * 7 + slotNumX).information.split("\n")) {
+                g2.drawString(line, xIF + gp.getTileSize() / 4, yIF + gp.getTileSize() + 15);
+                yIF += 25;
+            }
+            g2.drawString("Price: " + gp.npc[0].items.get(slotNumY * 7 + slotNumX).price, xIF + gp.getTileSize() / 4, yIF + gp.getTileSize() + 25);
         }
     }
     public void drawShopItems(int x, int y) {
@@ -450,7 +518,7 @@ public class UI {
         int xTmp = gp.getTileSize() / 2;
         int yTmp = gp.getTileSize() / 2;
         int widthTmp = gp.getTileSize() * 5;
-        int heightTmp = gp.getTileSize() * 8;
+        int heightTmp = gp.getTileSize() * 9;
         g2.fillRoundRect(xTmp, yTmp, widthTmp, heightTmp, 35, 35);
         Color c = new Color(255, 255, 255);
         g2.setColor(c);
@@ -461,6 +529,10 @@ public class UI {
         xTmp += 25;
         yTmp += 40;
         g2.drawString("Level: " + gp.getPlayer().level, xTmp, yTmp);
+        yTmp += 40;
+        g2.drawString("HP: " + gp.getPlayer().life + "/" + gp.getPlayer().maxLife, xTmp, yTmp);
+        yTmp += 40;
+        g2.drawString("Mana: " + gp.getPlayer().stamina + "/" + gp.getPlayer().maxStamina, xTmp, yTmp);
         yTmp += 40;
         g2.drawString("Attack: " + gp.getPlayer().attack, xTmp, yTmp);
         yTmp += 40;
@@ -567,7 +639,10 @@ public class UI {
         x += gp.getTileSize();
         y += gp.getTileSize();
         g2.setFont(maruMonica.deriveFont(Font.PLAIN, 25f));
-        g2.drawString(currentDialogue, x, y);
+        for(String line : currentDialogue.split("\n")) {
+            g2.drawString(line, x, y);
+            y += 40;
+        }
     }
     public void drawSubWindow(int x, int y, int width, int height) {
         Color c = new Color(0, 0, 0, 150); // Tao mau RGB (0,0,0) la mau den, gia tri thu 4 la do trong suot cua khung thoai, cang nho thi khung thoai cang trong suot, max 255 tuc la khung thoai khong trong suot

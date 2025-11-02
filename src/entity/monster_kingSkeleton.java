@@ -2,10 +2,336 @@ package entity;
 
 import main.GamePanel;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.Random;
+
 public class monster_kingSkeleton extends Entity{
 
-    public monster_kingSkeleton(GamePanel gp) {
+    int attackCounter;
+    public monster_kingSkeleton(GamePanel gp){
         super(gp);
+        getMonster();
+        getAttackImage();
+        attackCounter = 0;
+        direction = "down";
+        defaultSpeed = 1;
+        speed = defaultSpeed;
+        attack = 100;
+        defense = 100;
+        maxLife = 10000;
+        life = maxLife;
+        expWhenKill = new Random().nextInt(5) + 1; // Random exp nhan duoc tu 1 den 5
+        coinWanted = new Random().nextInt(5) + 1; // Random vang nhan duoc tu 1 den 5
+        monsterNum = 1;
+        solidArea.x = 7;
+        solidArea.y = 14;
+        solidArea.width = 130;
+        solidArea.height = 130;
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
+        attackArea.width = 144;
+        attackArea.height = 144;
+        monsterNo = skeletonNum;
+    }
+    public void getMonster(){
+        up1 = getImage("/monster/skeletonlord_up_1");
+        up2 = getImage("/monster/skeletonlord_up_2");
+        down1 = getImage("/monster/skeletonlord_down_1");
+        down2 = getImage("/monster/skeletonlord_down_2");
+        left1 = getImage("/monster/skeletonlord_left_1");
+        left2 = getImage("/monster/skeletonlord_left_2");
+        right1 = getImage("/monster/skeletonlord_right_1");
+        right2 = getImage("/monster/skeletonlord_right_2");
+    }
+    public void getAttackImage() {
+        attack_up1 = getImage("/monster/skeletonlord_attack_up_1");
+        attack_up2 = getImage("/monster/skeletonlord_attack_up_2");
+        attack_down1 = getImage("/monster/skeletonlord_attack_down_1");
+        attack_down2 = getImage("/monster/skeletonlord_attack_down_2");
+        attack_left1 = getImage("/monster/skeletonlord_attack_left_1");
+        attack_left2 = getImage("/monster/skeletonlord_attack_left_2");
+        attack_right1 = getImage("/monster/skeletonlord_attack_right_1");
+        attack_right2 = getImage("/monster/skeletonlord_attack_right_2");
+    }
+    public void update() {
+        int xDistance = Math.abs(worldX + 72 - gp.getPlayer().worldX);
+        int yDistance = Math.abs(worldY + 72 - gp.getPlayer().worldY);
+        int tileDistance = (xDistance + yDistance) / gp.getTileSize();
+        if(tileDistance < 3) {
+            // Xác định hướng tấn công dựa trên vị trí player
+            int dx = gp.getPlayer().worldX - (worldX + 72);
+            int dy = gp.getPlayer().worldY - (worldY + 72);
+
+            if (Math.abs(dx) > Math.abs(dy)) {
+                if (dx > 0) direction = "right";
+                else direction = "left";
+            } else {
+                if (dy > 0) direction = "down";
+                else direction = "up";
+            }
+
+            attackMode = true;
+        }
+        if(attackMode == true) {
+            attackProcess();
+            ++attackCounter;
+            if(attackCounter > 60) {
+                attackCounter = 0;
+                attackMode = false;
+            }
+        }
+        else {
+            collisionOn = false;
+            gp.cChecker.checkTile(this);
+            gp.cChecker.checkObject(this, false);
+            gp.cChecker.checkPlayer(this);
+            gp.cChecker.checkEntity(this, gp.monster);
+            gp.cChecker.checkEntity(this, gp.npc);
+
+            setAction();
+
+            collisionOn = false;
+            gp.cChecker.checkTile(this);
+            gp.cChecker.checkObject(this, false);
+            gp.cChecker.checkPlayer(this);
+            gp.cChecker.checkEntity(this, gp.monster);
+            gp.cChecker.checkEntity(this, gp.npc);
+
+            if (collisionOn) {
+                // Đổi hướng ngẫu nhiên khi va chạm
+                String[] dirs = {"up", "down", "left", "right"};
+                direction = dirs[new Random().nextInt(dirs.length)];
+                actionLockCounter = 0;
+            }
+            // Sau khi set direction moi thi kiem tra xem co va cham khong
+            collisionOn = false;
+            gp.cChecker.checkTile(this);
+            gp.cChecker.checkObject(this, false);
+            gp.cChecker.checkPlayer(this);
+            gp.cChecker.checkEntity(this, gp.monster);
+            gp.cChecker.checkEntity(this, gp.npc);
+            if (!collisionOn) {
+                switch (direction) {
+                    case "up": worldY -= defaultSpeed; break;
+                    case "down": worldY += defaultSpeed; break;
+                    case "left": worldX -= defaultSpeed; break;
+                    case "right": worldX += defaultSpeed; break;
+                }
+            }
+            spriteCounter++;
+            if (spriteCounter > 12) {
+                if (spriteNum == 1) {
+                    spriteNum = 2;
+                } else if (spriteNum == 2) {
+                    spriteNum = 1;
+                }
+                spriteCounter = 0;
+            }
+            ++immortalCounter; // thoi gian bat tu la 1s
+            if (immortalCounter > 60) {
+                if (immortalState == true) {
+                    immortalState = false;
+                }
+                immortalCounter = 0;
+            }
+        }
+
+    }
+    public void setAction() {
+        if(attackMode == false){
+            actionLockCounter++;
+            if (actionLockCounter == 120) {
+                String[] dirs = {"up", "down", "left", "right"};
+                direction = dirs[new Random().nextInt(dirs.length)];
+                actionLockCounter = 0;
+            }
+        }
+    }
+    public void attackProcess() {
+        colisPlayer = false;
+        ++spriteCounter;
+        if(spriteCounter <= 45) {
+            spriteNum = 1;
+        }
+        else if(spriteCounter <= 55) {
+            spriteNum = 2;
+            int currentWorldX = worldX;
+            int currentWorldY = worldY;
+            int solidAreaWidth = solidArea.width;
+            int solidAreaHeight = solidArea.height;
+            switch (direction) {
+                case "up":
+                    worldY -= attackArea.height;
+                    break;
+                case "down":
+                    worldY += attackArea.height;
+                    break;
+                case "left":
+                    worldX -= attackArea.width;
+                    break;
+                case "right":
+                    worldX += attackArea.width;
+                    break;
+            }
+            // Attack area -> solid area
+            solidArea.width = attackArea.width;
+            solidArea.height = attackArea.height;
+            // Check vung attack cham vao player hay khong
+            gp.cChecker.checkPlayer(this);
+            if(colisPlayer ==  true) {
+                if(gp.getPlayer().immortalState == false) {
+                    int damage = attack * 10 - gp.getPlayer().defense;
+                    if(damage <= 0) damage = 1;
+                    gp.getPlayer().life -= damage;
+                    gp.ui.addMessage("-" + damage + " HP");
+                    gp.getPlayer().immortalState = true;
+                }
+            }
+            // Khoi phuc cac stat
+            worldX = currentWorldX;
+            worldY = currentWorldY;
+            solidArea.width = solidAreaWidth;
+            solidArea.height = solidAreaHeight;
+
+        }
+        else {
+            spriteNum = 1;
+            spriteCounter = 0;
+            attackMode = false;
+        }
+    }
+    public void draw(Graphics2D g2, GamePanel gp) {
+        BufferedImage image = null;
+        int screenX = worldX - gp.getPlayer().worldX + gp.getPlayer().screenX;
+        // player.worldX la toa do X cua player trong map world, player.screenX la toa do vi tri nguoi choi hien thi tren man hinh (o giua map)
+        // screenX la toa do x hien thi tren man hinh
+        // Toa do hien thi tren man hinh = toa do trong world - toa do player trong world + toa do player tren man hinh
+        int screenY = worldY - gp.getPlayer().worldY + gp.getPlayer().screenY;
+        // Tuong tu screenX
+        int widthTmp = gp.getTileSize() * 3;
+        int heightTmp = gp.getTileSize() * 3;
+        if (worldX + gp.getTileSize() > gp.getPlayer().worldX - gp.getPlayer().screenX &&
+                worldX - gp.getTileSize() < gp.getPlayer().worldX + gp.getPlayer().screenX &&
+                worldY + gp.getTileSize() > gp.getPlayer().worldY - gp.getPlayer().screenY &&
+                worldY - gp.getTileSize() < gp.getPlayer().worldY + gp.getPlayer().screenY) {
+            if(attackMode == true) {
+                switch (direction) {
+                    case "up": //Neu direction == "up" => image = up1
+                        if (spriteNum == 1) {
+                            image = attack_up1;
+                        }
+                        if (spriteNum == 2) {
+                            image = attack_up2;
+                        }
+                        heightTmp += gp.getTileSize() * 3;
+                        screenY -= gp.getTileSize() * 3;
+                        break;
+                    case "down":
+                        if (spriteNum == 1) {
+                            image = attack_down1;
+                        }
+                        if (spriteNum == 2) {
+                            image = attack_down2;
+                        }
+                        heightTmp += gp.getTileSize() * 3;
+                        break;
+                    case "left":
+                        if (spriteNum == 1) {
+                            image = attack_left1;
+                        }
+                        if (spriteNum == 2) {
+                            image = attack_left2;
+                        }
+                        widthTmp += gp.getTileSize() * 3;
+                        screenX -= gp.getTileSize() * 3;
+                        break;
+                    case "right":
+                        if (spriteNum == 1) {
+                            image = attack_right1;
+                        }
+                        if (spriteNum == 2) {
+                            image = attack_right2;
+                        }
+                        widthTmp += gp.getTileSize() * 3;
+                        break;
+                }
+            }
+            else {
+                switch (direction) {
+                    case "up": //Neu direction == "up" => image = up1
+                        if (spriteNum == 1) {
+                            image = up1;
+                        }
+                        if (spriteNum == 2) {
+                            image = up2;
+                        }
+                        break;
+                    case "down":
+                        if (spriteNum == 1) {
+                            image = down1;
+                        }
+                        if (spriteNum == 2) {
+                            image = down2;
+                        }
+                        break;
+                    case "left":
+                        if (spriteNum == 1) {
+                            image = left1;
+                        }
+                        if (spriteNum == 2) {
+                            image = left2;
+                        }
+
+                        break;
+                    case "right":
+                        if (spriteNum == 1) {
+                            image = right1;
+                        }
+                        if (spriteNum == 2) {
+                            image = right2;
+                        }
+                        break;
+                }
+
+            }
+            if (immortalState == true) {
+                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+            }
+            if (dying == true) {
+                dyingAnimation(g2);
+            }
+            g2.drawImage(image, screenX, screenY, widthTmp, heightTmp, null); // Ve component map
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // sau khi ve thi reset ve do trong suot ve 0
+            if(drawHP == true) {
+                drawMonsterHP(g2, screenX, screenY);
+                ++drawHPCounter;
+                if(drawHPCounter > 60) {
+                    drawHPCounter = 0;
+                    drawHP = false;
+                }
+            }
+        } // Chi khi toa do world o trong khu vuc man hinh co the hien thi thi moi in ra
+    }
+    public void drawMonsterHP(Graphics2D g2, int x, int y) {
+        if(attackMode == true) {
+            switch (direction) {
+                case "up":
+                    x += gp.getTileSize();
+                    break;
+                case "down":
+
+                case "left":
+                    x += gp.getTileSize();
+                    break;
+                case "right":
+            }
+        }
+        g2.setColor(Color.black);
+        g2.fillRect(x, y - 10, gp.getTileSize(), 5);
+        int widthOfHP = (life * gp.getTileSize()) / maxLife;
+        g2.setColor(Color.red);
+        g2.fillRect(x, y - 10, widthOfHP, 5);
     }
 
 }

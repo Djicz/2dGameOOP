@@ -14,13 +14,14 @@ public class monster_orc extends Entity{
         getAttackImage();
         attackCounter = 0;
         direction = "down";
-        defaultSpeed = 3;
+        defaultSpeed = 1;
         speed = defaultSpeed;
-
+        attack = 5;
+        defense = 10;
         maxLife = 100;
         life = maxLife;
-        expWhenKill = 5;
-        coinWanted = 5;
+        expWhenKill = new Random().nextInt(5) + 1; // Random exp nhan duoc tu 1 den 5
+        coinWanted = new Random().nextInt(5) + 1; // Random vang nhan duoc tu 1 den 5
         monsterNum = 1;
         solidArea.x = 4;
         solidArea.y = 4;
@@ -74,7 +75,7 @@ public class monster_orc extends Entity{
         if(monsterFlag == true && attackMode == false) {
             onPath = true;
         }
-        if(attackMode == true) {
+        if(attackMode == true && knockBack == false) {
             attackProcess();
             ++attackCounter;
             if(attackCounter > 60) {
@@ -119,10 +120,10 @@ public class monster_orc extends Entity{
     public void attackProcess() {
         colisPlayer = false;
         ++spriteCounter;
-        if(spriteCounter <= 10) {
+        if(spriteCounter <= 45) {
             spriteNum = 1;
         }
-        else if(spriteCounter <= 30) {
+        else if(spriteCounter <= 55) {
             spriteNum = 2;
             int currentWorldX = worldX;
             int currentWorldY = worldY;
@@ -149,7 +150,10 @@ public class monster_orc extends Entity{
             gp.cChecker.checkPlayer(this);
             if(colisPlayer ==  true) {
                 if(gp.getPlayer().immortalState == false) {
-                    gp.getPlayer().life -= 10;
+                    int damage = attack * 10 - gp.getPlayer().defense;
+                    if(damage <= 0) damage = 1;
+                    gp.getPlayer().life -= damage;
+                    gp.ui.addMessage("-" + damage + " HP");
                     gp.getPlayer().immortalState = true;
                 }
             }

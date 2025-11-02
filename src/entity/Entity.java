@@ -1,7 +1,7 @@
 package entity;
 
 import main.GamePanel;
-import objects.SuperObject;
+import objects.*;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -15,10 +15,10 @@ public class Entity {
     public int worldX, worldY; // Toa do (x, y)
     public int speed; // Toc do di chuyen
 
-    public BufferedImage up1, up2, up3, up4, up5, up6,
-            down1, down2, down3, down4, down5, down6,
-            left1, left2, left3, left4, left5, left6,
-            right1, right2, right3, right4, right5, right6; // BufferedImage la lop luu tru du lieu hinh anh
+    public BufferedImage up1, up2, up3, up4, up5, up6, up7, up8,
+            down1, down2, down3, down4, down5, down6, down7, down8,
+            left1, left2, left3, left4, left5, left6, left7, left8,
+            right1, right2, right3, right4, right5, right6, right7, right8; // BufferedImage la lop luu tru du lieu hinh anh
     public BufferedImage attack_up1, attack_up2, attack_up3, attack_up4, attack_up5, attack_up6, attack_up7, attack_up8,
     attack_down1, attack_down2, attack_down3, attack_down4, attack_down5, attack_down6, attack_down7, attack_down8,
     attack_left1, attack_left2, attack_left3, attack_left4, attack_left5, attack_left6, attack_left7, attack_left8,
@@ -30,7 +30,8 @@ public class Entity {
 
     public int spriteCounter = 0;
     public int spriteNum = 1;
-
+    public int monsterNo;
+    public final int skeletonNum = 1;
     public Rectangle solidArea = new Rectangle(6, 12, 36, 36);
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
@@ -208,7 +209,6 @@ public class Entity {
                 knockBackCounter = 0;
                 knockBack = false;
                 speed = defaultSpeed;
-
             }
             else if(collisionOn == false) {
                 switch (gp.getPlayer().direction) {
@@ -227,7 +227,7 @@ public class Entity {
                 }
             }
             knockBackCounter++;
-            if(knockBackCounter == 10) {
+            if(knockBackCounter > 10) {
                 knockBackCounter = 0;
                 knockBack = false;
                 speed = defaultSpeed;
@@ -290,27 +290,37 @@ public class Entity {
         gp.ui.currentDialogue = dialogues[0];
     }
     public void checkDrop() {
-//        int rd = new Random().nextInt(100) + 1;
-//        if(rd <= 25) {
-//            dropItems(new object_coin());
-//        }
-//        else if(rd <= 50) {
-//            dropItems(new object_sword());
-//        }
-//        else {
-//            dropItems(new object_shield());
-//        }
-
+        if(monsterNo == skeletonNum && gp.getCurrentMap() == gp.getMap_4()) {
+            dropItems(new bone_key());
+        }
+        if(monsterNo == skeletonNum && gp.getCurrentMap() == gp.getMap_5()) {
+            dropItems(new bone_key_2());
+        }
+        if(monsterNo == skeletonNum && gp.getCurrentMap() == gp.getMap_6()) {
+            dropItems(new bone_key_3());
+        }
+        if(monsterNo == skeletonNum && gp.getCurrentMap() == gp.getMap_7()) {
+            dropItems(new bone_key_4());
+        }
+        if(monsterNo == skeletonNum && gp.getCurrentMap() == gp.getMap_8()) {
+            dropItems(new bone_key_5());
+        }
+        if(monsterNo == skeletonNum && gp.getCurrentMap() == gp.getMap_9()) {
+            dropItems(new bone_key_6());
+        }
+        if(monsterNo == skeletonNum && gp.getCurrentMap() == gp.getMap_10()) {
+            dropItems(new bone_key_7());
+        }
     }
     public void dropItems(SuperObject item) {
-//        for(int i = 0; i < gp.obj.length; i++) {
-//            if(gp.obj[i] == null) {
-//                gp.obj[i] = item;
-//                gp.obj[i].worldX = worldX;
-//                gp.obj[i].worldY = worldY;
-//                break;
-//            }
-//        }
+        for(int i = 0; i < gp.obj.length; i++) {
+            if(gp.obj[i] == null) {
+                gp.obj[i] = item;
+                gp.obj[i].worldX = worldX;
+                gp.obj[i].worldY = worldY;
+                break;
+            }
+        }
     }
     public void searchPath(int goalCol, int goalRow) {
         int startCol = (worldX + solidArea.x) / gp.getTileSize();

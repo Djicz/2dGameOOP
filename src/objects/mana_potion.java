@@ -6,8 +6,9 @@ import java.io.IOException;
 public class mana_potion extends SuperObject{
     public mana_potion() {
         name = "Mana Potion";
-        information = "used to restore a certain amount of mana";
+        information = "Used to restore a certain\namount of mana";
         type = potionItems;
+        price = 10;
         try {
             image = ImageIO.read(getClass().getResourceAsStream("/objects/items/mana_potion.png"));
         }catch(IOException e) {

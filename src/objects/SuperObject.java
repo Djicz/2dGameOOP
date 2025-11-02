@@ -19,8 +19,10 @@ public class SuperObject {
     public static final int potionItems = 2;
     public static final int keyItems = 3;
     public static final int skillItems = 4;
+    public static final int shieldItems = 5;
     public String information;
     public int knockBackPower = 0;
+    public int price;
     public void draw(Graphics2D g2, GamePanel gp) {
         int screenX = worldX - gp.getPlayer().worldX + gp.getPlayer().screenX;
         // player.worldX la toa do X cua player trong map world, player.screenX la toa do vi tri nguoi choi hien thi tren man hinh (o giua map)
