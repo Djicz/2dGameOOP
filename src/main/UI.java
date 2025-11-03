@@ -72,16 +72,16 @@ public class UI {
 //            drawPlayerLife();
             drawHpAndStamina();
             drawDialogueScreen();
-            if(gp.isCallWithShop() == true && gp.keyHandler.enterPressed == true) {
+            if(gp.isCallWithShop() == true && gp.getKeyHandler().enterPressed == true) {
                 slotNumX = 0;
                 slotNumY = 0;
                 gp.setGameState(gp.getShopState());
                 gp.setCallWithShop(false);
-                gp.keyHandler.enterPressed = false;
+                gp.getKeyHandler().enterPressed = false;
             }
-            if(gp.isCheckGate() == true && gp.keyHandler.enterPressed == true) {
+            if(gp.isCheckGate() == true && gp.getKeyHandler().enterPressed == true) {
                 gp.setGameState(gp.getGameContinue());
-                gp.tileM.loadMap(gp.getTmpMap());
+                gp.getTileM().loadMap(gp.getTmpMap());
                 gp.setTeleSet(true);
                 if(gp.getCurrentMap().equals(gp.getMap_1()) && gp.getTmpMap().equals(gp.getMap_2())) {
                     gp.getPlayer().worldX = gp.getTileSize() * 3;
@@ -167,17 +167,17 @@ public class UI {
                 gp.setUpGame();
 
                 gp.setCheckGate(false);
-                gp.keyHandler.enterPressed = false;
+                gp.getKeyHandler().enterPressed = false;
             }
         }
         if(gp.getGameState() == gp.getCharacterState()) {
 
             drawCharacterStatus();
             drawInventory();
-            if(gp.keyHandler.enterPressed == true) {
+            if(gp.getKeyHandler().enterPressed == true) {
                 int itemsNum = 5 * slotNumY + slotNumX;
                 if (itemsNum < gp.getPlayer().items.size()) {
-                    gp.keyHandler.enterPressed = false;
+                    gp.getKeyHandler().enterPressed = false;
                     gp.setGameState(gp.getCharacterState_notify());
                 }
             }
@@ -190,14 +190,14 @@ public class UI {
         }
         if(gp.getGameState() == gp.getShopState()) {
             drawShop();
-            if(gp.keyHandler.escPressed == true) {
+            if(gp.getKeyHandler().escPressed == true) {
                 gp.setGameState(gp.getGameContinue());
             }
-            if(gp.keyHandler.enterPressed == true) {
-                gp.keyHandler.enterPressed = false;
+            if(gp.getKeyHandler().enterPressed == true) {
+                gp.getKeyHandler().enterPressed = false;
                 int itemsNum = 7 * slotNumY + slotNumX;
-                if(itemsNum < gp.npc[0].items.size()) {
-                    item = gp.npc[0].items.get(itemsNum);
+                if(itemsNum < gp.getNpc()[0].items.size()) {
+                    item = gp.getNpc()[0].items.get(itemsNum);
                     gp.setGameState(gp.getShopState_notify());
                 }
             }
@@ -205,39 +205,39 @@ public class UI {
         if(gp.getGameState() == gp.getShopState_notify()) {
             drawShop();
             int itemsNum = 7 * slotNumY + slotNumX;
-            if(gp.getPlayer().coin < gp.npc[0].items.get(itemsNum).price) {
+            if(gp.getPlayer().coin < gp.getNpc()[0].items.get(itemsNum).price) {
                 drawNotEnough();
             }
             else {
                 drawNotify();
             }
-            if(gp.keyHandler.enterPressed == true) {
-                if(gp.getPlayer().coin >= gp.npc[0].items.get(itemsNum).price) {
-                    if (gp.npc[0].items.get(itemsNum).type == SuperObject.weaponItems || gp.npc[0].items.get(itemsNum).type == SuperObject.shieldItems) {
-                        gp.getPlayer().items.add(gp.npc[0].items.get(itemsNum));
-                        gp.npc[0].items.remove(itemsNum);
+            if(gp.getKeyHandler().enterPressed == true) {
+                if(gp.getPlayer().coin >= gp.getNpc()[0].items.get(itemsNum).price) {
+                    if (gp.getNpc()[0].items.get(itemsNum).type == SuperObject.weaponItems || gp.getNpc()[0].items.get(itemsNum).type == SuperObject.shieldItems) {
+                        gp.getPlayer().items.add(gp.getNpc()[0].items.get(itemsNum));
+                        gp.getNpc()[0].items.remove(itemsNum);
                     }
-                    else if (gp.npc[0].items.get(itemsNum).name.equals("HP Potion")) {
+                    else if (gp.getNpc()[0].items.get(itemsNum).name.equals("HP Potion")) {
                         gp.getPlayer().hpQAverage++;
                     }
-                    else if (gp.npc[0].items.get(itemsNum).name.equals("Mana Potion")) {
+                    else if (gp.getNpc()[0].items.get(itemsNum).name.equals("Mana Potion")) {
                         gp.getPlayer().manaQAverage++;
                     }
-                    else if (gp.npc[0].items.get(itemsNum).type == SuperObject.skillItems) {
-                        gp.getPlayer().items.add(gp.npc[0].items.get(itemsNum));
-                        gp.npc[0].items.remove(itemsNum);
+                    else if (gp.getNpc()[0].items.get(itemsNum).type == SuperObject.skillItems) {
+                        gp.getPlayer().items.add(gp.getNpc()[0].items.get(itemsNum));
+                        gp.getNpc()[0].items.remove(itemsNum);
                     }
-                    else if (gp.npc[0].items.get(itemsNum).type == SuperObject.keyItems) {
-                        gp.getPlayer().items.add(gp.npc[0].items.get(itemsNum));
-                        gp.npc[0].items.remove(itemsNum);
+                    else if (gp.getNpc()[0].items.get(itemsNum).type == SuperObject.keyItems) {
+                        gp.getPlayer().items.add(gp.getNpc()[0].items.get(itemsNum));
+                        gp.getNpc()[0].items.remove(itemsNum);
                     }
                     gp.getPlayer().coin -= item.price;
                 }
-                gp.keyHandler.enterPressed = false;
+                gp.getKeyHandler().enterPressed = false;
                 gp.setGameState(gp.getShopState());
             }
-            if(gp.keyHandler.escPressed == true) {
-                gp.keyHandler.escPressed = false;
+            if(gp.getKeyHandler().escPressed == true) {
+                gp.getKeyHandler().escPressed = false;
                 gp.setGameState(gp.getShopState());
             }
         }
@@ -245,7 +245,7 @@ public class UI {
             drawCharacterStatus();
             drawInventory();
             drawNotify();
-            if(gp.keyHandler.enterPressed == true) {
+            if(gp.getKeyHandler().enterPressed == true) {
                 int itemsNum = 5 * slotNumY + slotNumX;
                 if (itemsNum < gp.getPlayer().items.size()) {
                     if (gp.getPlayer().items.get(itemsNum).type == new SuperObject().weaponItems) {
@@ -277,11 +277,11 @@ public class UI {
                         gp.getPlayer().items.remove(itemsNum);
                     }
                 }
-                gp.keyHandler.enterPressed = false;
+                gp.getKeyHandler().enterPressed = false;
                 gp.setGameState(gp.getCharacterState());
             }
-            if(gp.keyHandler.escPressed == true) {
-                gp.keyHandler.escPressed = false;
+            if(gp.getKeyHandler().escPressed == true) {
+                gp.getKeyHandler().escPressed = false;
                 gp.setGameState(gp.getCharacterState());
             }
         }
@@ -293,7 +293,7 @@ public class UI {
                 reTryCounter = 0;
             }
             if(delayTime <= 0) {
-                gp.tileM.loadMap(gp.getMap_1());
+                gp.getTileM().loadMap(gp.getMap_1());
                 gp.getPlayer().worldX = gp.getTileSize() * 16;
                 gp.getPlayer().worldY = gp.getTileSize() * 13;
                 gp.setCurrentMap(gp.getMap_1());
@@ -439,7 +439,7 @@ public class UI {
         // Draw item's information
 
 
-        if(slotNumY * 7 + slotNumX < gp.npc[0].items.size()) {
+        if(slotNumY * 7 + slotNumX < gp.getNpc()[0].items.size()) {
             int xIF = gp.getTileSize() * 10 - gp.getTileSize() / 2;
             int yIF = gp.getTileSize() * 8;
             int widthIF = gp.getTileSize() * 6;
@@ -450,18 +450,18 @@ public class UI {
             g2.setColor(Color.white);
             g2.drawRoundRect(xIF, yIF, widthIF, heightIF, 35, 35);
             g2.setFont(maruMonica.deriveFont(Font.PLAIN, 20));
-            g2.drawString("[" + gp.npc[0].items.get(slotNumY * 7 + slotNumX).name + "]", xIF + gp.getTileSize() / 4, yIF + gp.getTileSize() / 2);
-            for(String line : gp.npc[0].items.get(slotNumY * 7 + slotNumX).information.split("\n")) {
+            g2.drawString("[" + gp.getNpc()[0].items.get(slotNumY * 7 + slotNumX).name + "]", xIF + gp.getTileSize() / 4, yIF + gp.getTileSize() / 2);
+            for(String line : gp.getNpc()[0].items.get(slotNumY * 7 + slotNumX).information.split("\n")) {
                 g2.drawString(line, xIF + gp.getTileSize() / 4, yIF + gp.getTileSize() + 15);
                 yIF += 25;
             }
-            g2.drawString("Price: " + gp.npc[0].items.get(slotNumY * 7 + slotNumX).price, xIF + gp.getTileSize() / 4, yIF + gp.getTileSize() + 25);
+            g2.drawString("Price: " + gp.getNpc()[0].items.get(slotNumY * 7 + slotNumX).price, xIF + gp.getTileSize() / 4, yIF + gp.getTileSize() + 25);
         }
     }
     public void drawShopItems(int x, int y) {
         int xr = x, yr = y, itemCounter = 0;
-        for(int i = 0; i < gp.npc[0].items.size(); i++) {
-            g2.drawImage(gp.npc[0].items.get(i).image, xr + 5, yr + 5, gp.getTileSize(), gp.getTileSize(), null);
+        for(int i = 0; i < gp.getNpc()[0].items.size(); i++) {
+            g2.drawImage(gp.getNpc()[0].items.get(i).image, xr + 5, yr + 5, gp.getTileSize(), gp.getTileSize(), null);
             if(itemCounter < 6) {
                 itemCounter++;
                 xr += gp.getTileSize();

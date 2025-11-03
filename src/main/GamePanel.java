@@ -51,6 +51,27 @@ public class GamePanel extends JPanel implements Runnable {
     private String tmpMap;
     private int teleCounter = 0;
     private boolean teleSet = false;
+    int FPS = 60;
+    long timer = 0;
+    int drawCount = 0;
+    private TileManager tileM = new TileManager(this);
+    private KeyHandler keyHandler = new KeyHandler(this);
+    private AssetSetter aSetter = new AssetSetter(this);
+    private SuperObject[] obj = new SuperObject[20];
+    private ArrayList<Entity> projectileList = new ArrayList<>();
+    Thread gameThread; // Khi khoi tao gameThread se tu dong chay phuong thuc Run()
+    private CollisionChecker cChecker = new CollisionChecker(this);
+    private Player player = new Player(this, keyHandler);
+    private UI ui = new UI(this);
+    private EventHandler eHandler = new EventHandler(this);
+    public Player getPlayer() {
+        return player;
+    }
+    private Entity[] npc = new Entity[20];
+    private Entity[] monster = new Entity[11];
+    private PathFinder pFinder = new PathFinder(this);
+
+    // Getter, Setter
     public int getMaxWorldCol() {
         return maxWorldCol;
     }
@@ -177,6 +198,9 @@ public class GamePanel extends JPanel implements Runnable {
     public int getDrawCount() {
         return drawCount;
     }
+    public TileManager getTileM(){
+        return tileM;
+    }
     public KeyHandler getKeyHandler() {
         return keyHandler;
     }
@@ -283,28 +307,7 @@ public class GamePanel extends JPanel implements Runnable {
         this.pFinder = pFinder;
     }
     //FPS
-    int FPS = 60;
-    long timer = 0;
-    int drawCount = 0;
-    TileManager tileM = new TileManager(this);
-    public KeyHandler keyHandler = new KeyHandler(this);
-    public AssetSetter aSetter = new AssetSetter(this);
-    public SuperObject[] obj = new SuperObject[20];
-    public TileManager getTileM() {
-        return tileM;
-    }
-    public ArrayList<Entity> projectileList = new ArrayList<>();
-    Thread gameThread; // Khi khoi tao gameThread se tu dong chay phuong thuc Run()
-    public CollisionChecker cChecker = new CollisionChecker(this);
-    Player player = new Player(this, keyHandler);
-    public UI ui = new UI(this);
-    public EventHandler eHandler = new EventHandler(this);
-    public Player getPlayer() {
-        return player;
-    }
-    public Entity[] npc = new Entity[20];
-    public Entity[] monster = new Entity[11];
-    public PathFinder pFinder = new PathFinder(this);
+
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight)); // Set size yeu thich, trong nay mac dinh se hien size width * height
         this.setBackground(Color.black); // Nen mac dinh se co mau den

@@ -78,7 +78,7 @@ public class newSkill extends Projectile {
     } // Chi khi toa do world o trong khu vuc man hinh co the hien thi thi moi in ra
     public void update() {
 
-        int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+        int monsterIndex = gp.getcChecker().checkEntity(this, gp.getMonster());
         if(monsterIndex != 999) {
             gp.getPlayer().damageMonster(monsterIndex, knockBackPower);
             aliveState = false;

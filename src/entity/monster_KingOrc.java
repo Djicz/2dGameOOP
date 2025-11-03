@@ -137,13 +137,13 @@ public class monster_KingOrc extends Entity{
             solidArea.width = attackArea.width;
             solidArea.height = attackArea.height;
             // Check vung attack cham vao player hay khong
-            gp.cChecker.checkPlayer(this);
+            gp.getcChecker().checkPlayer(this);
             if(colisPlayer ==  true) {
                 if(gp.getPlayer().immortalState == false) {
                     int damage = attack * 10 - gp.getPlayer().defense;
                     if(damage <= 0) damage = 1;
                     gp.getPlayer().life -= damage;
-                    gp.ui.addMessage("-" + damage + " HP");
+                    gp.getUi().addMessage("-" + damage + " HP");
                     gp.getPlayer().immortalState = true;
                 }
             }

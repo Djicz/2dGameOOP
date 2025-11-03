@@ -111,11 +111,11 @@ public class monster_slime extends Entity{
         }
         else {
             collisionOn = false;
-            gp.cChecker.checkTile(this);
-            gp.cChecker.checkObject(this, false);
-            gp.cChecker.checkPlayer(this);
-            int i_mon = gp.cChecker.checkEntity(this, gp.monster);
-            int i_npc = gp.cChecker.checkEntity(this, gp.npc);
+            gp.getcChecker().checkTile(this);
+            gp.getcChecker().checkObject(this, false);
+            gp.getcChecker().checkPlayer(this);
+            int i_mon = gp.getcChecker().checkEntity(this, gp.getMonster());
+            int i_npc = gp.getcChecker().checkEntity(this, gp.getNpc());
 
             if(knockBack == true) {
                 if(collisionOn == true) {
@@ -151,22 +151,22 @@ public class monster_slime extends Entity{
                 setAction();
 
                 collisionOn = false;
-                gp.cChecker.checkTile(this);
-                gp.cChecker.checkObject(this, false);
-                gp.cChecker.checkPlayer(this);
-                gp.cChecker.checkEntity(this, gp.monster);
-                gp.cChecker.checkEntity(this, gp.npc);
+                gp.getcChecker().checkTile(this);
+                gp.getcChecker().checkObject(this, false);
+                gp.getcChecker().checkPlayer(this);
+                gp.getcChecker().checkEntity(this, gp.getMonster());
+                gp.getcChecker().checkEntity(this, gp.getNpc());
 
                 if (collisionOn && attackMode == false) {
                     // Đổi hướng ngẫu nhiên khi va chạm
                     String[] dirs = {"up", "down", "left", "right"};
                     direction = dirs[new Random().nextInt(dirs.length)];
                     collisionOn = false;
-                    gp.cChecker.checkTile(this);
-                    gp.cChecker.checkObject(this, false);
-                    gp.cChecker.checkPlayer(this);
-                    gp.cChecker.checkEntity(this, gp.monster);
-                    gp.cChecker.checkEntity(this, gp.npc);
+                    gp.getcChecker().checkTile(this);
+                    gp.getcChecker().checkObject(this, false);
+                    gp.getcChecker().checkPlayer(this);
+                    gp.getcChecker().checkEntity(this, gp.getMonster());
+                    gp.getcChecker().checkEntity(this, gp.getNpc());
                 }
 
                 if (!collisionOn) {
@@ -260,7 +260,7 @@ public class monster_slime extends Entity{
             solidArea.width = attackArea.width;
             solidArea.height = attackArea.height;
             // Check vung attack cham vao player hay khong
-            gp.cChecker.checkPlayer(this);
+            gp.getcChecker().checkPlayer(this);
             if(colisPlayer ==  true) {
                 if(gp.getPlayer().immortalState == false) {
                     gp.getPlayer().life -= 10;

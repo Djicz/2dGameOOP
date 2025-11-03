@@ -83,20 +83,20 @@ public class monster_kingSkeleton extends Entity{
         }
         else {
             collisionOn = false;
-            gp.cChecker.checkTile(this);
-            gp.cChecker.checkObject(this, false);
-            gp.cChecker.checkPlayer(this);
-            gp.cChecker.checkEntity(this, gp.monster);
-            gp.cChecker.checkEntity(this, gp.npc);
+            gp.getcChecker().checkTile(this);
+            gp.getcChecker().checkObject(this, false);
+            gp.getcChecker().checkPlayer(this);
+            gp.getcChecker().checkEntity(this, gp.getMonster());
+            gp.getcChecker().checkEntity(this, gp.getNpc());
 
             setAction();
 
             collisionOn = false;
-            gp.cChecker.checkTile(this);
-            gp.cChecker.checkObject(this, false);
-            gp.cChecker.checkPlayer(this);
-            gp.cChecker.checkEntity(this, gp.monster);
-            gp.cChecker.checkEntity(this, gp.npc);
+            gp.getcChecker().checkTile(this);
+            gp.getcChecker().checkObject(this, false);
+            gp.getcChecker().checkPlayer(this);
+            gp.getcChecker().checkEntity(this, gp.getMonster());
+            gp.getcChecker().checkEntity(this, gp.getNpc());
 
             if (collisionOn) {
                 // Đổi hướng ngẫu nhiên khi va chạm
@@ -106,11 +106,11 @@ public class monster_kingSkeleton extends Entity{
             }
             // Sau khi set direction moi thi kiem tra xem co va cham khong
             collisionOn = false;
-            gp.cChecker.checkTile(this);
-            gp.cChecker.checkObject(this, false);
-            gp.cChecker.checkPlayer(this);
-            gp.cChecker.checkEntity(this, gp.monster);
-            gp.cChecker.checkEntity(this, gp.npc);
+            gp.getcChecker().checkTile(this);
+            gp.getcChecker().checkObject(this, false);
+            gp.getcChecker().checkPlayer(this);
+            gp.getcChecker().checkEntity(this, gp.getMonster());
+            gp.getcChecker().checkEntity(this, gp.getNpc());
             if (!collisionOn) {
                 switch (direction) {
                     case "up": worldY -= defaultSpeed; break;
@@ -178,13 +178,13 @@ public class monster_kingSkeleton extends Entity{
             solidArea.width = attackArea.width;
             solidArea.height = attackArea.height;
             // Check vung attack cham vao player hay khong
-            gp.cChecker.checkPlayer(this);
+            gp.getcChecker().checkPlayer(this);
             if(colisPlayer ==  true) {
                 if(gp.getPlayer().immortalState == false) {
                     int damage = attack * 10 - gp.getPlayer().defense;
                     if(damage <= 0) damage = 1;
                     gp.getPlayer().life -= damage;
-                    gp.ui.addMessage("-" + damage + " HP");
+                    gp.getUi().addMessage("-" + damage + " HP");
                     gp.getPlayer().immortalState = true;
                 }
             }

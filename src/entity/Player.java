@@ -183,19 +183,19 @@ public class Player extends Entity {
             }
 
             collisionOn = false;
-            gp.cChecker.checkTile(this);
+            gp.getcChecker().checkTile(this);
             // Kiem tra object
-            int objIndex = gp.cChecker.checkObject(this, true);
+            int objIndex = gp.getcChecker().checkObject(this, true);
             pickUpObject(objIndex);
 
 //            if(keyH.shiftPressed != true) {
                 //Kiem tra NPC
-                int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
-                int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+                int npcIndex = gp.getcChecker().checkEntity(this, gp.getNpc());
+                int monsterIndex = gp.getcChecker().checkEntity(this, gp.getMonster());
                 soloMonster(monsterIndex);
                 interactNPC(npcIndex);
 //            }
-            gp.eHandler.checkEvent();
+            gp.geteHandler().checkEvent();
 //            gp.checkGate = false;
 //            gp.callWithShop = false;
             if (collisionOn == false && keyH.enterPressed == false) {
@@ -205,8 +205,8 @@ public class Player extends Entity {
                         if(keyH.shiftPressed == true && stamina > 0) {
                             for(int i = 1; i <= 3; i++) {
                                 worldY -= speed;
-                                gp.cChecker.checkEntity(this, gp.npc);
-                                gp.cChecker.checkEntity(this, gp.monster);
+                                gp.getcChecker().checkEntity(this, gp.getNpc());
+                                gp.getcChecker().checkEntity(this, gp.getMonster());
                                 if(collisionOn == true) {
                                     break;
                                 }
@@ -225,8 +225,8 @@ public class Player extends Entity {
                         if(keyH.shiftPressed == true && stamina > 20) {
                             for(int i = 1; i <= 3; i++) {
                                 worldY += speed;
-                                gp.cChecker.checkEntity(this, gp.npc);
-                                gp.cChecker.checkEntity(this, gp.monster);
+                                gp.getcChecker().checkEntity(this, gp.getNpc());
+                                gp.getcChecker().checkEntity(this, gp.getMonster());
                                 if(collisionOn == true) {
                                     break;
                                 }
@@ -245,8 +245,8 @@ public class Player extends Entity {
                         if(keyH.shiftPressed == true && stamina > 20) {
                             for(int i = 1; i <= 3; i++) {
                                 worldX -= speed;
-                                gp.cChecker.checkEntity(this, gp.npc);
-                                gp.cChecker.checkEntity(this, gp.monster);
+                                gp.getcChecker().checkEntity(this, gp.getNpc());
+                                gp.getcChecker().checkEntity(this, gp.getMonster());
                                 if(collisionOn == true) {
                                     break;
                                 }
@@ -265,8 +265,8 @@ public class Player extends Entity {
                         if(keyH.shiftPressed == true && stamina > 20) {
                             for(int i = 1; i <= 3; i++) {
                                 worldX += speed;
-                                gp.cChecker.checkEntity(this, gp.npc);
-                                gp.cChecker.checkEntity(this, gp.monster);
+                                gp.getcChecker().checkEntity(this, gp.getNpc());
+                                gp.getcChecker().checkEntity(this, gp.getMonster());
                                 if(collisionOn == true) {
                                     break;
                                 }
@@ -299,7 +299,7 @@ public class Player extends Entity {
 
         if(keyH.shotKeyPressed == true && projectile.aliveState == false && projectSkill == true) {
             projectile.set(worldX, worldY, direction, true, this);
-            gp.projectileList.add(projectile);
+            gp.getProjectileList().add(projectile);
 
 
         }
@@ -332,10 +332,10 @@ public class Player extends Entity {
                 else {
                     life = maxLife;
                 }
-                gp.ui.currentHpCd -= 10;
+                gp.getUi().currentHpCd -= 10;
                 hpQCounter = 0;
             }
-            if(gp.ui.currentHpCd <= 0) {
+            if(gp.getUi().currentHpCd <= 0) {
                 hpQC = false;
             }
         }
@@ -348,10 +348,10 @@ public class Player extends Entity {
                 else {
                     stamina = maxStamina;
                 }
-                gp.ui.currentManaCd -= 10;
+                gp.getUi().currentManaCd -= 10;
                 manaQCounter = 0;
             }
-            if(gp.ui.currentManaCd <= 0) {
+            if(gp.getUi().currentManaCd <= 0) {
                 manaQC = false;
             }
         }
@@ -366,7 +366,7 @@ public class Player extends Entity {
             stamina = maxStamina;
             strength += 1;
             dexterity += 1;
-            gp.ui.addMessage("Level Up!");
+            gp.getUi().addMessage("Level Up!");
         }
         nextLevelExp = level * 5;
         attack = getPlayerAttack();
@@ -401,7 +401,7 @@ public class Player extends Entity {
             solidArea.width = attackArea.width;
             solidArea.height = attackArea.height;
             // Check vung attack cham vao monster hay khong
-            int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+            int monsterIndex = gp.getcChecker().checkEntity(this, gp.getMonster());
             damageMonster(monsterIndex, currentWeapon.knockBackPower);
 
             // Khoi phuc cac stat
@@ -435,7 +435,7 @@ public class Player extends Entity {
             solidArea.width = attackArea.width;
             solidArea.height = attackArea.height;
             // Check vung attack cham vao monster hay khong
-            int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+            int monsterIndex = gp.getcChecker().checkEntity(this, gp.getMonster());
             damageMonster(monsterIndex, currentWeapon.knockBackPower);
 
             // Khoi phuc cac stat
@@ -469,7 +469,7 @@ public class Player extends Entity {
             solidArea.width = attackArea.width;
             solidArea.height = attackArea.height;
             // Check vung attack cham vao monster hay khong
-            int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+            int monsterIndex = gp.getcChecker().checkEntity(this, gp.getMonster());
             damageMonster(monsterIndex, currentWeapon.knockBackPower);
 
             // Khoi phuc cac stat
@@ -503,7 +503,7 @@ public class Player extends Entity {
             solidArea.width = attackArea.width;
             solidArea.height = attackArea.height;
             // Check vung attack cham vao monster hay khong
-            int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+            int monsterIndex = gp.getcChecker().checkEntity(this, gp.getMonster());
             damageMonster(monsterIndex, currentWeapon.knockBackPower);
 
             // Khoi phuc cac stat
@@ -537,7 +537,7 @@ public class Player extends Entity {
             solidArea.width = attackArea.width;
             solidArea.height = attackArea.height;
             // Check vung attack cham vao monster hay khong
-            int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+            int monsterIndex = gp.getcChecker().checkEntity(this, gp.getMonster());
             damageMonster(monsterIndex, currentWeapon.knockBackPower);
 
             // Khoi phuc cac stat
@@ -571,7 +571,7 @@ public class Player extends Entity {
             solidArea.width = attackArea.width;
             solidArea.height = attackArea.height;
             // Check vung attack cham vao monster hay khong
-            int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+            int monsterIndex = gp.getcChecker().checkEntity(this, gp.getMonster());
             damageMonster(monsterIndex, currentWeapon.knockBackPower);
 
             // Khoi phuc cac stat
@@ -605,7 +605,7 @@ public class Player extends Entity {
             solidArea.width = attackArea.width;
             solidArea.height = attackArea.height;
             // Check vung attack cham vao monster hay khong
-            int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+            int monsterIndex = gp.getcChecker().checkEntity(this, gp.getMonster());
             damageMonster(monsterIndex, currentWeapon.knockBackPower);
 
             // Khoi phuc cac stat
@@ -623,18 +623,18 @@ public class Player extends Entity {
     }
     public void damageMonster(int i, int knockBackPower) {
         if(i != 999) {
-            if(gp.monster[i].immortalState == false) {
-                gp.monster[i].drawHP = true;
-                gp.monster[i].drawHPCounter = 0;
-                if(knockBackPower > 0)  knockBack(gp.monster[i], knockBackPower);
-                int damage = attack * 10 - gp.monster[i].defense;
+            if(gp.getMonster()[i].immortalState == false) {
+                gp.getMonster()[i].drawHP = true;
+                gp.getMonster()[i].drawHPCounter = 0;
+                if(knockBackPower > 0)  knockBack(gp.getMonster()[i], knockBackPower);
+                int damage = attack * 10 - gp.getMonster()[i].defense;
                 if(damage <= 0) damage = 1;
-                gp.monster[i].life -= damage;
-                gp.ui.addMessage(damage + " damage!");
-                gp.monster[i].immortalState = true;
-                if(gp.monster[i].monsterFlag == false)   gp.monster[i].monsterFlag = true;
-                if(gp.monster[i].life <= 0) {
-                    gp.monster[i].dying = true;
+                gp.getMonster()[i].life -= damage;
+                gp.getUi().addMessage(damage + " damage!");
+                gp.getMonster()[i].immortalState = true;
+                if(gp.getMonster()[i].monsterFlag == false)   gp.getMonster()[i].monsterFlag = true;
+                if(gp.getMonster()[i].life <= 0) {
+                    gp.getMonster()[i].dying = true;
                 }
             }
         }
@@ -642,9 +642,9 @@ public class Player extends Entity {
     }
     public void pickUpObject(int index) {
         if(index != 999) {
-            gp.ui.addMessage("You have picked up the item: " + gp.obj[index].name);
-            gp.getPlayer().items.add(gp.obj[index]);
-            gp.obj[index] = null;
+            gp.getUi().addMessage("You have picked up the item: " + gp.getObj()[index].name);
+            gp.getPlayer().items.add(gp.getObj()[index]);
+            gp.getObj()[index] = null;
 
         }
     }
@@ -653,8 +653,8 @@ public class Player extends Entity {
         if(index != 999) {
             if(keyH.enterPressed == true) {
                 gp.setGameState(gp.getDialogueState());
-                gp.npc[index].speak();
-                if(gp.npc[index].name.equals("shop")){
+                gp.getNpc()[index].speak();
+                if(gp.getNpc()[index].name.equals("shop")){
                     gp.setCallWithShop(true);
                 }
                 keyH.enterPressed = false;

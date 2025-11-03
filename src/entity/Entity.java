@@ -189,20 +189,20 @@ public class Entity {
     }
     public void checkCollision() {
         collisionOn = false;
-        gp.cChecker.checkTile(this);
-        gp.cChecker.checkObject(this, false);
-        gp.cChecker.checkPlayer(this);
-        int i_mon = gp.cChecker.checkEntity(this, gp.monster);
-        int i_npc = gp.cChecker.checkEntity(this, gp.npc);
+        gp.getcChecker().checkTile(this);
+        gp.getcChecker().checkObject(this, false);
+        gp.getcChecker().checkPlayer(this);
+        int i_mon = gp.getcChecker().checkEntity(this, gp.getMonster());
+        int i_npc = gp.getcChecker().checkEntity(this, gp.getNpc());
     }
     public void update() {
 
         collisionOn = false;
-        gp.cChecker.checkTile(this);
-        gp.cChecker.checkObject(this, false);
-        gp.cChecker.checkPlayer(this);
-        int i_mon = gp.cChecker.checkEntity(this, gp.monster);
-        int i_npc = gp.cChecker.checkEntity(this, gp.npc);
+        gp.getcChecker().checkTile(this);
+        gp.getcChecker().checkObject(this, false);
+        gp.getcChecker().checkPlayer(this);
+        int i_mon = gp.getcChecker().checkEntity(this, gp.getMonster());
+        int i_npc = gp.getcChecker().checkEntity(this, gp.getNpc());
 
         if(knockBack == true) {
             if(collisionOn == true) {
@@ -237,22 +237,22 @@ public class Entity {
             setAction();
 
             collisionOn = false;
-            gp.cChecker.checkTile(this);
-            gp.cChecker.checkObject(this, false);
-            gp.cChecker.checkPlayer(this);
-            gp.cChecker.checkEntity(this, gp.monster);
-            gp.cChecker.checkEntity(this, gp.npc);
+            gp.getcChecker().checkTile(this);
+            gp.getcChecker().checkObject(this, false);
+            gp.getcChecker().checkPlayer(this);
+            gp.getcChecker().checkEntity(this, gp.getMonster());
+            gp.getcChecker().checkEntity(this, gp.getNpc());
 
             if (collisionOn && attackMode == false) {
                 // Đổi hướng ngẫu nhiên khi va chạm
                 String[] dirs = {"up", "down", "left", "right"};
                 direction = dirs[new Random().nextInt(dirs.length)];
                 collisionOn = false;
-                gp.cChecker.checkTile(this);
-                gp.cChecker.checkObject(this, false);
-                gp.cChecker.checkPlayer(this);
-                gp.cChecker.checkEntity(this, gp.monster);
-                gp.cChecker.checkEntity(this, gp.npc);
+                gp.getcChecker().checkTile(this);
+                gp.getcChecker().checkObject(this, false);
+                gp.getcChecker().checkPlayer(this);
+                gp.getcChecker().checkEntity(this, gp.getMonster());
+                gp.getcChecker().checkEntity(this, gp.getNpc());
             }
 
             if (!collisionOn) {
@@ -287,7 +287,7 @@ public class Entity {
     }
 
     public void speak() {
-        gp.ui.currentDialogue = dialogues[0];
+        gp.getUi().currentDialogue = dialogues[0];
     }
     public void checkDrop() {
         if(monsterNo == skeletonNum && gp.getCurrentMap() == gp.getMap_4()) {
@@ -313,11 +313,11 @@ public class Entity {
         }
     }
     public void dropItems(SuperObject item) {
-        for(int i = 0; i < gp.obj.length; i++) {
-            if(gp.obj[i] == null) {
-                gp.obj[i] = item;
-                gp.obj[i].worldX = worldX;
-                gp.obj[i].worldY = worldY;
+        for(int i = 0; i < gp.getObj().length; i++) {
+            if(gp.getObj()[i] == null) {
+                gp.getObj()[i] = item;
+                gp.getObj()[i].worldX = worldX;
+                gp.getObj()[i].worldY = worldY;
                 break;
             }
         }
@@ -325,10 +325,10 @@ public class Entity {
     public void searchPath(int goalCol, int goalRow) {
         int startCol = (worldX + solidArea.x) / gp.getTileSize();
         int startRow = (worldY + solidArea.y) / gp.getTileSize();
-        gp.pFinder.setNodes(startCol, startRow, goalCol, goalRow, this);
-        if(gp.pFinder.search() == true) {
-            int nextX = gp.pFinder.pathList.get(0).col * gp.getTileSize();
-            int nextY = gp.pFinder.pathList.get(0).row * gp.getTileSize();
+        gp.getpFinder().setNodes(startCol, startRow, goalCol, goalRow, this);
+        if(gp.getpFinder().search() == true) {
+            int nextX = gp.getpFinder().pathList.get(0).col * gp.getTileSize();
+            int nextY = gp.getpFinder().pathList.get(0).row * gp.getTileSize();
             int enLeftX = worldX + solidArea.x;
             int enRightX = worldX + solidArea.x + solidArea.width;
             int enTopY = worldY + solidArea.y;
@@ -377,8 +377,8 @@ public class Entity {
                     direction = "right";
                 }
             }
-            int nextCol = gp.pFinder.pathList.get(0).col;
-            int nextRow = gp.pFinder.pathList.get(0).row;
+            int nextCol = gp.getpFinder().pathList.get(0).col;
+            int nextRow = gp.getpFinder().pathList.get(0).row;
             if(nextCol == goalCol && nextRow == goalRow) {
                 onPath = false;
             }

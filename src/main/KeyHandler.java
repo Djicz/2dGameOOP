@@ -24,7 +24,7 @@ public class KeyHandler implements KeyListener {
             if(gp.getPlayer().hpQC == false && gp.getPlayer().hpQAverage > 0) {
                 gp.getPlayer().hpQAverage--;
                 gp.getPlayer().hpQC = true;
-                gp.ui.currentHpCd = gp.ui.cdHpMax;
+                gp.getUi().currentHpCd = gp.getUi().cdHpMax;
             }
         }
 
@@ -32,7 +32,7 @@ public class KeyHandler implements KeyListener {
             if(gp.getPlayer().manaQC == false && gp.getPlayer().manaQAverage > 0) {
                 gp.getPlayer().manaQAverage--;
                 gp.getPlayer().manaQC = true;
-                gp.ui.currentManaCd = gp.ui.cdManaMax;
+                gp.getUi().currentManaCd = gp.getUi().cdManaMax;
             }
         }
 
@@ -51,31 +51,31 @@ public class KeyHandler implements KeyListener {
 
             }
             else if(gp.getGameState() == gp.getCharacterState()) {
-                gp.ui.slotNumX = 0;
-                gp.ui.slotNumY = 0;
+                gp.getUi().slotNumX = 0;
+                gp.getUi().slotNumY = 0;
                 gp.setGameState(gp.getGameContinue());
             }
         }
         if(gp.getGameState() == gp.getTitleState()) {
             if(code == KeyEvent.VK_W){
-                gp.ui.titleIn--;
+                gp.getUi().titleIn--;
             }
 
             if(code == KeyEvent.VK_S){
-                gp.ui.titleIn++;
+                gp.getUi().titleIn++;
             }
-            if(gp.ui.titleIn < 1){
-                gp.ui.titleIn = 3;
+            if(gp.getUi().titleIn < 1){
+                gp.getUi().titleIn = 3;
             }
-            if(gp.ui.titleIn > 3){
-                gp.ui.titleIn = 1;
+            if(gp.getUi().titleIn > 3){
+                gp.getUi().titleIn = 1;
             }
             if(code == KeyEvent.VK_ENTER) {
-                if(gp.ui.titleIn == 1) {
+                if(gp.getUi().titleIn == 1) {
                     // New game
                     gp.setGameState(gp.getGameContinue());
                 }
-                else if(gp.ui.titleIn == 2) {
+                else if(gp.getUi().titleIn == 2) {
                     // Load game
                 }
                 else {
@@ -102,12 +102,12 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_W){
 
             if(gp.getGameState() == gp.getCharacterState()) {
-                if(gp.ui.slotNumY > 0)  gp.ui.slotNumY--;
-                else    gp.ui.slotNumY = 5;
+                if(gp.getUi().slotNumY > 0)  gp.getUi().slotNumY--;
+                else    gp.getUi().slotNumY = 5;
             }
             if(gp.getGameState() == gp.getShopState()) {
-                if(gp.ui.slotNumY > 0)  gp.ui.slotNumY--;
-                else    gp.ui.slotNumY = 7;
+                if(gp.getUi().slotNumY > 0)  gp.getUi().slotNumY--;
+                else    gp.getUi().slotNumY = 7;
             }
             upPressed = true;
         }
@@ -115,15 +115,15 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_S){
 
             if(gp.getGameState() == gp.getCharacterState()) {
-                if(gp.ui.slotNumY < 5)  gp.ui.slotNumY++;
+                if(gp.getUi().slotNumY < 5)  gp.getUi().slotNumY++;
                 else {
-                    gp.ui.slotNumY = 0;
+                    gp.getUi().slotNumY = 0;
                 }
             }
             if(gp.getGameState() == gp.getShopState()) {
-                if(gp.ui.slotNumY < 7)  gp.ui.slotNumY++;
+                if(gp.getUi().slotNumY < 7)  gp.getUi().slotNumY++;
                 else {
-                    gp.ui.slotNumY = 0;
+                    gp.getUi().slotNumY = 0;
                 }
             }
             downPressed = true;
@@ -133,29 +133,29 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_A){
 
             if(gp.getGameState() == gp.getCharacterState()) {
-                if(gp.ui.slotNumX > 0)  gp.ui.slotNumX--;
-                else if(gp.ui.slotNumX == 0) {
-                    if(gp.ui.slotNumY == 0) {
-                        gp.ui.slotNumX = 4;
-                        gp.ui.slotNumY = 5;
+                if(gp.getUi().slotNumX > 0)  gp.getUi().slotNumX--;
+                else if(gp.getUi().slotNumX == 0) {
+                    if(gp.getUi().slotNumY == 0) {
+                        gp.getUi().slotNumX = 4;
+                        gp.getUi().slotNumY = 5;
                     }
                     else {
-                        gp.ui.slotNumY--;
-                        gp.ui.slotNumX = 4;
+                        gp.getUi().slotNumY--;
+                        gp.getUi().slotNumX = 4;
                     }
                 }
 
             }
             if(gp.getGameState() == gp.getShopState()) {
-                if(gp.ui.slotNumX > 0)  gp.ui.slotNumX--;
-                else if(gp.ui.slotNumX == 0) {
-                    if(gp.ui.slotNumY == 0) {
-                        gp.ui.slotNumX = 6;
-                        gp.ui.slotNumY = 7;
+                if(gp.getUi().slotNumX > 0)  gp.getUi().slotNumX--;
+                else if(gp.getUi().slotNumX == 0) {
+                    if(gp.getUi().slotNumY == 0) {
+                        gp.getUi().slotNumX = 6;
+                        gp.getUi().slotNumY = 7;
                     }
                     else {
-                        gp.ui.slotNumY--;
-                        gp.ui.slotNumX = 6;
+                        gp.getUi().slotNumY--;
+                        gp.getUi().slotNumX = 6;
                     }
                 }
 
@@ -166,30 +166,30 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_D){
 
             if(gp.getGameState() == gp.getCharacterState()) {
-                if(gp.ui.slotNumX < 4)  gp.ui.slotNumX++;
-                else if(gp.ui.slotNumX == 4){
-                    if(gp.ui.slotNumY < 5){
+                if(gp.getUi().slotNumX < 4)  gp.getUi().slotNumX++;
+                else if(gp.getUi().slotNumX == 4){
+                    if(gp.getUi().slotNumY < 5){
 
-                        gp.ui.slotNumY++;
-                        gp.ui.slotNumX = 0;
+                        gp.getUi().slotNumY++;
+                        gp.getUi().slotNumX = 0;
                     }
                     else {
-                        gp.ui.slotNumX = 0;
-                        gp.ui.slotNumY = 0;
+                        gp.getUi().slotNumX = 0;
+                        gp.getUi().slotNumY = 0;
                     }
                 }
             }
             if(gp.getGameState() == gp.getShopState()) {
-                if(gp.ui.slotNumX < 6)  gp.ui.slotNumX++;
-                else if(gp.ui.slotNumX == 6){
-                    if(gp.ui.slotNumY < 7){
+                if(gp.getUi().slotNumX < 6)  gp.getUi().slotNumX++;
+                else if(gp.getUi().slotNumX == 6){
+                    if(gp.getUi().slotNumY < 7){
 
-                        gp.ui.slotNumY++;
-                        gp.ui.slotNumX = 0;
+                        gp.getUi().slotNumY++;
+                        gp.getUi().slotNumX = 0;
                     }
                     else {
-                        gp.ui.slotNumX = 0;
-                        gp.ui.slotNumY = 0;
+                        gp.getUi().slotNumX = 0;
+                        gp.getUi().slotNumY = 0;
                     }
                 }
             }

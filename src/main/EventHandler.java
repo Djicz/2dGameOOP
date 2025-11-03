@@ -31,7 +31,7 @@ public class EventHandler {
             }
             else {
                 if(loadMapMessage == false) {
-                    gp.ui.addMessage("You don't have key");
+                    gp.getUi().addMessage("You don't have key");
                     loadMapMessage = true;
                     loadMapCounter = 0;
                 }
@@ -66,7 +66,7 @@ public class EventHandler {
             }
             else {
                 if(loadMapMessage == false) {
-                    gp.ui.addMessage("You don't have key");
+                    gp.getUi().addMessage("You don't have key");
                     loadMapMessage = true;
                     loadMapCounter = 0;
                 }
@@ -81,7 +81,7 @@ public class EventHandler {
             }
             else {
                 if(loadMapMessage == false) {
-                    gp.ui.addMessage("You don't have key");
+                    gp.getUi().addMessage("You don't have key");
                     loadMapMessage = true;
                     loadMapCounter = 0;
                 }
@@ -100,7 +100,7 @@ public class EventHandler {
             }
             else {
                 if(loadMapMessage == false) {
-                    gp.ui.addMessage("You don't have key");
+                    gp.getUi().addMessage("You don't have key");
                     loadMapMessage = true;
                     loadMapCounter = 0;
                 }
@@ -119,7 +119,7 @@ public class EventHandler {
             }
             else {
                 if(loadMapMessage == false) {
-                    gp.ui.addMessage("You don't have key");
+                    gp.getUi().addMessage("You don't have key");
                     loadMapMessage = true;
                     loadMapCounter = 0;
                 }
@@ -138,7 +138,7 @@ public class EventHandler {
             }
             else {
                 if(loadMapMessage == false) {
-                    gp.ui.addMessage("You don't have key");
+                    gp.getUi().addMessage("You don't have key");
                     loadMapMessage = true;
                     loadMapCounter = 0;
                 }
@@ -157,7 +157,7 @@ public class EventHandler {
             }
             else {
                 if(loadMapMessage == false) {
-                    gp.ui.addMessage("You don't have key");
+                    gp.getUi().addMessage("You don't have key");
                     loadMapMessage = true;
                     loadMapCounter = 0;
                 }
@@ -176,7 +176,7 @@ public class EventHandler {
             }
             else {
                 if(loadMapMessage == false) {
-                    gp.ui.addMessage("You don't have key");
+                    gp.getUi().addMessage("You don't have key");
                     loadMapMessage = true;
                     loadMapCounter = 0;
                 }
@@ -195,7 +195,7 @@ public class EventHandler {
             }
             else {
                 if(loadMapMessage == false) {
-                    gp.ui.addMessage("You don't have key");
+                    gp.getUi().addMessage("You don't have key");
                     loadMapMessage = true;
                     loadMapCounter = 0;
                 }
@@ -209,21 +209,21 @@ public class EventHandler {
 
     }
     public void healHeart(int gameState){
-        if(gp.keyHandler.enterPressed == true) {
+        if(gp.getKeyHandler().enterPressed == true) {
             gp.setGameState(gameState);
-            gp.ui.currentDialogue = "1 coc nuoc da'i vao mom";
+            gp.getUi().currentDialogue = "1 coc nuoc da'i vao mom";
             gp.getPlayer().life++;
         }
-        gp.keyHandler.enterPressed = false;
+        gp.getKeyHandler().enterPressed = false;
     }
     public void damagePit(int gameState){
         gp.setGameState(gameState);
-        gp.ui.currentDialogue = "Dam trung bay roi thang ngu";
+        gp.getUi().currentDialogue = "Dam trung bay roi thang ngu";
         gp.getPlayer().life--;
     }
     public void mapTele(int gameState) {
         gp.setGameState(gameState);
-        gp.ui.currentDialogue = "Ban co muon chac dich chuyen toi me cung khong?";
+        gp.getUi().currentDialogue = "Ban co muon chac dich chuyen toi me cung khong?";
         gp.setCheckGate(true);
     }
     public boolean hit(int eventCol, int eventRow, String reqDirection) {
