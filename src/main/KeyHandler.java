@@ -77,6 +77,37 @@ public class KeyHandler implements KeyListener {
                 }
                 else if(gp.getUi().titleIn == 2) {
                     // Load game
+                    gp.getLoadGame().load();
+                    gp.setGameState(gp.getGameContinue());
+                }
+                else {
+                    // Out game
+                    System.exit(0);
+                }
+            }
+        }
+        if(gp.getGameState() == gp.getGamePause()) {
+            if(code == KeyEvent.VK_W){
+                gp.getUi().pauseIn--;
+            }
+            if(code == KeyEvent.VK_S){
+                gp.getUi().pauseIn++;
+            }
+            if(gp.getUi().pauseIn < 1){
+                gp.getUi().pauseIn= 3;
+            }
+            if(gp.getUi().pauseIn > 3){
+                gp.getUi().pauseIn = 1;
+            }
+            if(code == KeyEvent.VK_ENTER) {
+                if(gp.getUi().pauseIn == 1) {
+                    // Continue
+                    gp.setGameState(gp.getGameContinue());
+                }
+                else if(gp.getUi().pauseIn == 2) {
+                    // Save game
+                    gp.getLoadGame().save();
+                    gp.setGameState(gp.getGameContinue());
                 }
                 else {
                     // Out game

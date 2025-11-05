@@ -15,6 +15,7 @@ public class UI {
     GamePanel gp;
     public Font maruMonica;
     public int titleIn = 1;
+    public int pauseIn = 1;
     public int slotNumX = 0;
     public int slotNumY = 0;
     public int cdHpMax = 100;
@@ -681,12 +682,43 @@ public class UI {
 
     }
     public void drawPause(Graphics2D g2) {
-        String text = "Game Paused"; // Van ban muon in ra
-        g2.setFont(maruMonica.deriveFont(Font.BOLD, 40));
+//        String text = "Game Paused"; // Van ban muon in ra
+//        g2.setFont(maruMonica.deriveFont(Font.BOLD, 40));
+//        g2.setColor(Color.white);
+//        int x = getXInMiddleScreen(text);
+//        int y = gp.getScreenHeight() / 2; // Can giua theo truc y
+//        g2.drawString(text, x, y); // Ve van ban
+        g2.setColor(new Color(0, 0, 0, 100));
+        g2.fillRoundRect(gp.getTileSize() * 5, gp.getTileSize() * 4, gp.getTileSize() * 6, gp.getTileSize() * 4, 10, 10);
+        g2.setStroke(new BasicStroke(2));
         g2.setColor(Color.white);
+        g2.drawRoundRect(gp.getTileSize() * 5, gp.getTileSize() * 4, gp.getTileSize() * 6, gp.getTileSize() * 4, 10, 10);
+
+        String text = "Continue";
+        Font r = maruMonica.deriveFont(Font.BOLD, 35f);
+        g2.setFont(r);
         int x = getXInMiddleScreen(text);
-        int y = gp.getScreenHeight() / 2; // Can giua theo truc y
-        g2.drawString(text, x, y); // Ve van ban
+        int y = gp.getTileSize() * 5 + 12;
+        g2.drawString(text, x, y);
+        if(pauseIn == 1) {
+            g2.drawString(">", x - 40, y);
+        }
+
+        text = "Save Game";
+        x = getXInMiddleScreen(text);
+        y += gp.getTileSize();
+        g2.drawString(text, x, y);
+        if(pauseIn == 2) {
+            g2.drawString(">", x - 40, y);
+        }
+
+        text = "Exit";
+        x = getXInMiddleScreen(text);
+        y += gp.getTileSize();
+        g2.drawString(text, x, y);
+        if(pauseIn == 3) {
+            g2.drawString(">", x - 40, y);
+        }
     }
     public int getXInMiddleScreen(String text) {
         int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth(); // Lay do dai van ban

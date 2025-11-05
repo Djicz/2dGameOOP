@@ -2,6 +2,7 @@ package main;
 import AI.PathFinder;
 import entity.Entity;
 import entity.Player;
+import loadGame.LoadGame;
 import objects.SuperObject;
 import tile.TileManager;
 
@@ -72,7 +73,11 @@ public class GamePanel extends JPanel implements Runnable {
     private Entity[] monster = new Entity[11];
     private PathFinder pFinder = new PathFinder(this);
     private Sound sound = new Sound();
+    private LoadGame loadGame = new LoadGame(this);
 
+    public LoadGame getLoadGame() {
+        return loadGame;
+    }
     // Getter, Setter
     public int getMaxWorldCol() {
         return maxWorldCol;

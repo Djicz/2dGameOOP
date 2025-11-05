@@ -5,7 +5,7 @@ import java.io.IOException;
 
 public class bone_key_4 extends SuperObject{
     public bone_key_4() {
-        name = "Bone Key";
+        name = "Bone  4";
         information = "Bone of Orc";
         type = keyItems;
         price = 100;
