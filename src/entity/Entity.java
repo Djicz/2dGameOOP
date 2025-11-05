@@ -47,19 +47,19 @@ public class Entity {
     public int life;
     public int maxStamina;
     public int stamina;
-    public int staminaCounterIncrea = 0;
-    public int staminaCounterDecrea = 0;
-    public int knockBackCounter = 0;
-    public boolean immortalState = false;
-    public boolean dying = false;
-    public int immortalCounter = 0;
-    public boolean knockBack = false;
-    public int knockBackPower = 0;
-    public boolean drawHP = false;
-    public int drawHPCounter = 0;
-    public boolean attackMode = false;
-    public int expWhenKill;
-    public int coinWanted;
+    public int staminaCounterIncrea = 0; // Dem thoi gian hoi mana
+    public int staminaCounterDecrea = 0; // Dem thoi gian tru mana
+    public int knockBackCounter = 0; // Dem thoi gian quai bi day lui
+    public boolean immortalState = false; // Trang thai bat tu
+    public boolean dying = false; // Trang thai chet
+    public int immortalCounter = 0; // Dem thoi gian bat tu
+    public boolean knockBack = false; // Trang thai bi day lui
+    public int knockBackPower = 0; // Chi so day lui
+    public boolean drawHP = false; // Trang thai ve hp cua monster
+    public int drawHPCounter = 0; // Thoi gian hien thanh HP cua monster
+    public boolean attackMode = false; // Trang thai tan cong
+    public int expWhenKill; // Exp nhan duoc khi giet quai
+    public int coinWanted; // Coin nhan duoc khi giet quai
     public int monsterNum = 0;
     public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
     // Chi so nhan vat
@@ -285,32 +285,17 @@ public class Entity {
             immortalCounter = 0;
         }
     }
-
     public void speak() {
         gp.getUi().currentDialogue = dialogues[0];
     }
     public void checkDrop() {
-        if(monsterNo == skeletonNum && gp.getCurrentMap() == gp.getMap_4()) {
-            dropItems(new bone_key());
-        }
-        if(monsterNo == skeletonNum && gp.getCurrentMap() == gp.getMap_5()) {
-            dropItems(new bone_key_2());
-        }
-        if(monsterNo == skeletonNum && gp.getCurrentMap() == gp.getMap_6()) {
-            dropItems(new bone_key_3());
-        }
-        if(monsterNo == skeletonNum && gp.getCurrentMap() == gp.getMap_7()) {
-            dropItems(new bone_key_4());
-        }
-        if(monsterNo == skeletonNum && gp.getCurrentMap() == gp.getMap_8()) {
-            dropItems(new bone_key_5());
-        }
-        if(monsterNo == skeletonNum && gp.getCurrentMap() == gp.getMap_9()) {
-            dropItems(new bone_key_6());
-        }
-        if(monsterNo == skeletonNum && gp.getCurrentMap() == gp.getMap_10()) {
-            dropItems(new bone_key_7());
-        }
+        if(monsterNo == skeletonNum && gp.getCurrentMap() == gp.getMap_4()) {dropItems(new bone_key());}
+        if(monsterNo == skeletonNum && gp.getCurrentMap() == gp.getMap_5()) {dropItems(new bone_key_2());}
+        if(monsterNo == skeletonNum && gp.getCurrentMap() == gp.getMap_6()) {dropItems(new bone_key_3());}
+        if(monsterNo == skeletonNum && gp.getCurrentMap() == gp.getMap_7()) {dropItems(new bone_key_4());}
+        if(monsterNo == skeletonNum && gp.getCurrentMap() == gp.getMap_8()) {dropItems(new bone_key_5());}
+        if(monsterNo == skeletonNum && gp.getCurrentMap() == gp.getMap_9()) {dropItems(new bone_key_6());}
+        if(monsterNo == skeletonNum && gp.getCurrentMap() == gp.getMap_10()) {dropItems(new bone_key_7());}
     }
     public void dropItems(SuperObject item) {
         for(int i = 0; i < gp.getObj().length; i++) {
@@ -333,56 +318,35 @@ public class Entity {
             int enRightX = worldX + solidArea.x + solidArea.width;
             int enTopY = worldY + solidArea.y;
             int enBottomY = worldY + solidArea.y + solidArea.height;
-
-            if(enTopY > nextY && enLeftX >= nextX && enRightX < nextX + gp.getTileSize()) {
-                direction = "up";
-            }
-            else if(enTopY < nextY && enLeftX >= nextX && enRightX < nextX + gp.getTileSize()) {
-                direction = "down";
-            }
+            if(enTopY > nextY && enLeftX >= nextX && enRightX < nextX + gp.getTileSize()) {direction = "up";}
+            else if(enTopY < nextY && enLeftX >= nextX && enRightX < nextX + gp.getTileSize()) {direction = "down";}
             else if(enTopY >= nextY && enBottomY < nextY + gp.getTileSize()) {
-                if(enLeftX > nextX) {
-                    direction = "left";
-                }
-                if(enLeftX < nextX) {
-                    direction = "right";
-                }
+                if(enLeftX > nextX) {direction = "left";}
+                if(enLeftX < nextX) {direction = "right";}
             }
             else if(enTopY > nextY && enLeftX > nextX) {
                 direction = "up";
                 checkCollision();
-                if(collisionOn == true) {
-                    direction = "left";
-                }
-
+                if(collisionOn == true) {direction = "left";}
             }
             else if(enTopY > nextY && enLeftX < nextX) {
                 direction = "up";
                 checkCollision();
-                if(collisionOn == true) {
-                    direction = "right";
-                }
+                if(collisionOn == true) {direction = "right";}
             }
             else if(enTopY < nextY && enLeftX > nextX) {
                 direction = "down";
                 checkCollision();
-                if(collisionOn == true) {
-                    direction = "left";
-                }
+                if(collisionOn == true) {direction = "left";}
             }
             else if(enTopY < nextY && enLeftX < nextX) {
                 direction = "down";
                 checkCollision();
-                if(collisionOn == true) {
-                    direction = "right";
-                }
+                if(collisionOn == true) {direction = "right";}
             }
             int nextCol = gp.getpFinder().pathList.get(0).col;
             int nextRow = gp.getpFinder().pathList.get(0).row;
-            if(nextCol == goalCol && nextRow == goalRow) {
-                onPath = false;
-            }
+            if(nextCol == goalCol && nextRow == goalRow) {onPath = false;}
         }
-
     }
 }

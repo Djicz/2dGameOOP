@@ -10,7 +10,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Player extends Entity {
-
     KeyHandler keyH;
     public final int screenX, screenY; // Toa do vi tri player duoc ve tren man hinh
     public int hpQAverage, manaQAverage;
@@ -18,6 +17,8 @@ public class Player extends Entity {
     public int hpQCounter, manaQCounter;
     public boolean projectSkill;
     public int hasKey;
+    public int soundCounter = 0;
+    public boolean soundCheck = false;
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
         this.keyH = keyH;
@@ -27,14 +28,12 @@ public class Player extends Entity {
         solidArea = new Rectangle(6, 20, 24, 28); // x, y la toa do goc tren ben trai cua hinh chu nhat trong object (o day la player)
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
-
         attackArea.width = 24;
         attackArea.height = 30;
         items = new ArrayList<>();
         setDefaultValues(); // Dat chi so ban dau cho player
         getPlayerImage(); // Lay anh player
         getPlayerAttackImage();
-
         // Set chi so nhan vat ban dau
         level = 1;
         strength = 1;
@@ -46,12 +45,6 @@ public class Player extends Entity {
         currentShield = null;
         attack = getPlayerAttack();
         defense = getPlayerDefense();
-        addItems();
-
-
-    }
-    public void addItems() {
-
     }
     public int getPlayerAttack() {
         if(currentWeapon != null)   return currentWeapon.stat + strength * 2; // Attack = chi so cua vu khi + suc manh
@@ -159,6 +152,7 @@ public class Player extends Entity {
         // Check trang thai tan cong
         if(attackMode == true && currentWeapon != null) {
             attackProcess();
+            if(spriteCounter == 0)  gp.playSE(4);
         }
         // Toa do ben trai tren cung la (0, 0)
         // => Truc x tang theo chieu tu trai sang phai
@@ -181,7 +175,18 @@ public class Player extends Entity {
                 direction = "right";
 
             }
-
+            if(soundCheck == false) {
+                gp.playSE(6);
+                soundCheck = true;
+                soundCounter = 0;
+            }
+            else {
+                soundCounter += speed;
+                if(soundCounter > 50) {
+                    soundCheck = false;
+                    soundCounter = 0;
+                }
+            }
             collisionOn = false;
             gp.getcChecker().checkTile(this);
             // Kiem tra object
@@ -300,7 +305,7 @@ public class Player extends Entity {
         if(keyH.shotKeyPressed == true && projectile.aliveState == false && projectSkill == true) {
             projectile.set(worldX, worldY, direction, true, this);
             gp.getProjectileList().add(projectile);
-
+            gp.playSE(5);
 
         }
 

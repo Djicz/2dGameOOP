@@ -75,6 +75,7 @@ public class monster_kingSkeleton extends Entity{
         }
         if(attackMode == true) {
             attackProcess();
+            if(spriteCounter == 46) {gp.playSE(8);}
             ++attackCounter;
             if(attackCounter > 60) {
                 attackCounter = 0;
@@ -333,5 +334,4 @@ public class monster_kingSkeleton extends Entity{
         g2.setColor(Color.red);
         g2.fillRect(x, y - 10, widthOfHP, 5);
     }
-
 }

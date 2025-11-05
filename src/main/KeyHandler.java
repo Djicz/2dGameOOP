@@ -48,19 +48,19 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_C) {
             if(gp.getGameState() == gp.getGameContinue()) {
                 gp.setGameState(gp.getCharacterState());
-
+                gp.playSE(3);
             }
             else if(gp.getGameState() == gp.getCharacterState()) {
                 gp.getUi().slotNumX = 0;
                 gp.getUi().slotNumY = 0;
                 gp.setGameState(gp.getGameContinue());
+                gp.playSE(2);
             }
         }
         if(gp.getGameState() == gp.getTitleState()) {
             if(code == KeyEvent.VK_W){
                 gp.getUi().titleIn--;
             }
-
             if(code == KeyEvent.VK_S){
                 gp.getUi().titleIn++;
             }
@@ -236,6 +236,5 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_D){
             rightPressed = false;
         }
-
     }
 }

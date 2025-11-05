@@ -60,33 +60,24 @@ public class monster_orc extends Entity{
             // Xác định hướng tấn công dựa trên vị trí player
             int dx = gp.getPlayer().worldX - worldX;
             int dy = gp.getPlayer().worldY - worldY;
-
             if (Math.abs(dx) > Math.abs(dy)) {
                 if (dx > 0) direction = "right";
                 else direction = "left";
             } else {
                 if (dy > 0) direction = "down";
                 else direction = "up";
-            }
-
-            attackMode = true;
-            onPath = false;
-        }
-        if(monsterFlag == true && attackMode == false) {
-            onPath = true;
-        }
+            }attackMode = true;onPath = false;}
+        if(monsterFlag == true && attackMode == false) {onPath = true;}
         if(attackMode == true && knockBack == false) {
             attackProcess();
+            if(spriteCounter == 46) {gp.playSE(7);}
             ++attackCounter;
             if(attackCounter > 60) {
                 attackCounter = 0;
                 attackMode = false;
             }
         }
-        else {
-            super.update();
-        }
-
+        else {super.update();}
     }
     public void setAction() {
         if(attackMode == true) {
@@ -95,7 +86,6 @@ public class monster_orc extends Entity{
         if(onPath == true) {
             int goalCol = (gp.getPlayer().worldX + gp.getPlayer().solidArea.x) / gp.getTileSize();
             int goalRow = (gp.getPlayer().worldY + gp.getPlayer().solidArea.y) / gp.getTileSize();
-
             searchPath(goalCol, goalRow);
         }
         else {
@@ -162,7 +152,6 @@ public class monster_orc extends Entity{
             worldY = currentWorldY;
             solidArea.width = solidAreaWidth;
             solidArea.height = solidAreaHeight;
-
         }
         else {
             spriteNum = 1;
@@ -302,5 +291,4 @@ public class monster_orc extends Entity{
         g2.setColor(Color.red);
         g2.fillRect(x, y - 10, widthOfHP, 5);
     }
-
 }

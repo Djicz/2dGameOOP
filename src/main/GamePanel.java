@@ -70,6 +70,7 @@ public class GamePanel extends JPanel implements Runnable {
     private Entity[] npc = new Entity[20];
     private Entity[] monster = new Entity[11];
     private PathFinder pFinder = new PathFinder(this);
+    private Sound sound = new Sound();
 
     // Getter, Setter
     public int getMaxWorldCol() {
@@ -306,6 +307,12 @@ public class GamePanel extends JPanel implements Runnable {
     public void setpFinder(PathFinder pFinder) {
         this.pFinder = pFinder;
     }
+    public void setSound(Sound sound) {
+        this.sound = sound;
+    }
+    public Sound getSound() {
+        return sound;
+    }
     //FPS
 
     public GamePanel() {
@@ -328,6 +335,12 @@ public class GamePanel extends JPanel implements Runnable {
         aSetter.setObject();
         aSetter.setNPC();
         aSetter.setMonster();
+        if(currentMap.equals(map_1) || currentMap.equals(map_2) || currentMap.equals(map_3)) {
+            playMusic(0);
+        }
+        else {
+            playMusic(1);
+        }
     }
 
     public void startGameThread() {
@@ -434,7 +447,6 @@ public class GamePanel extends JPanel implements Runnable {
     }
     @Override
     public void run() {  // Game loop
-
         double drawInterval = 1000000000 / FPS; // Su dung nano giay 1000000000Ns = 1s
         // 1 anh duoc ve trong drawInterval Ns thi 1 Ns se ve duoc FPS (60) anh
         double nextDrawTime = System.nanoTime() + drawInterval;
@@ -475,4 +487,17 @@ public class GamePanel extends JPanel implements Runnable {
 
         }
     }
+    public void playMusic(int i) {
+        sound.setFile(i);
+        sound.play();
+        sound.loop();
+    }
+    public void stopMusic() {
+        sound.stop();
+    }
+    public void playSE(int i) {
+        sound.setFile(i);
+        sound.play();
+    }
+
 }

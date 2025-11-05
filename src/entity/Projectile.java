@@ -16,7 +16,6 @@ public class Projectile extends Entity{
         this.life = this.maxLife;
     }
     public void update() {
-
         if(user == gp.getPlayer()) {
             int monsterIndex = gp.getcChecker().checkEntity(this, gp.getMonster());
             if(monsterIndex != 999) {
@@ -25,31 +24,17 @@ public class Projectile extends Entity{
             }
         }
         switch (direction) {
-            case "up":
-                worldY -= speed;
-                break;
-            case "down":
-                worldY += speed;
-                break;
-            case "left":
-                worldX -= speed;
-                break;
-            case "right":
-                worldX += speed;
-                break;
+            case "up": worldY -= speed; break;
+            case "down": worldY += speed; break;
+            case "left": worldX -= speed; break;
+            case "right": worldX += speed; break;
         }
         --life;
-        if(life <= 0) {
-            aliveState = false;
-        }
+        if(life <= 0) {aliveState = false;}
         spriteCounter++;
         if(spriteCounter > 12) {
-            if(spriteNum == 1) {
-                spriteNum = 2;
-            }
-            else if(spriteNum == 2) {
-                spriteNum = 1;
-            }
+            if(spriteNum == 1) {spriteNum = 2;}
+            else if(spriteNum == 2) {spriteNum = 1;}
             spriteCounter = 0;
         }
     }

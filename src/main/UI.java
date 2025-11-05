@@ -13,7 +13,6 @@ import java.util.ArrayList;
 public class UI {
 
     GamePanel gp;
-    public Font arial;
     public Font maruMonica;
     public int titleIn = 1;
     public int slotNumX = 0;
@@ -25,17 +24,13 @@ public class UI {
     public int reTryCounter = 1;
     public int delayTime = 10;
     public SuperObject item;
-    ArrayList<String> messageList = new ArrayList<>();
-    ArrayList<Integer> messageCounterList = new ArrayList<>();
-    public void addMessage(String text) {
-        messageList.add(text);
-        messageCounterList.add(0);
-    }
     public Graphics2D g2;
     public String currentDialogue = "";
+    ArrayList<String> messageList = new ArrayList<>();
+    ArrayList<Integer> messageCounterList = new ArrayList<>();
+
     public UI(GamePanel gp) {
         this.gp = gp;
-        arial = new Font("Arial", Font.PLAIN, 20); // font chu, kieu chu (nghieng, thang, in dam...), co chu
         try {
             InputStream is = getClass().getResourceAsStream("/font/MaruMonica.ttf");
             maruMonica = Font.createFont(Font.TRUETYPE_FONT, is);
@@ -80,6 +75,7 @@ public class UI {
                 gp.getKeyHandler().enterPressed = false;
             }
             if(gp.isCheckGate() == true && gp.getKeyHandler().enterPressed == true) {
+                gp.stopMusic();
                 gp.setGameState(gp.getGameContinue());
                 gp.getTileM().loadMap(gp.getTmpMap());
                 gp.setTeleSet(true);
@@ -184,9 +180,6 @@ public class UI {
             if(gp.getPlayer().hasKey == 8) {
                 gp.setGameState(gp.getGameWinState());
             }
-        }
-        if(gp.getGameState() == gp.getGameWinState()) {
-            drawCongratulation();
         }
         if(gp.getGameState() == gp.getShopState()) {
             drawShop();
@@ -305,6 +298,13 @@ public class UI {
                 delayTime = 10;
             }
         }
+        if(gp.getGameState() == gp.getGameWinState()) {
+            drawCongratulation();
+        }
+    }
+    public void addMessage(String text) {
+        messageList.add(text);
+        messageCounterList.add(0);
     }
     public void drawCongratulation() {
         String text = "Congratulation!"; // Van ban muon in ra

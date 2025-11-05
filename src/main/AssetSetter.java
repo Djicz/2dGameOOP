@@ -39,17 +39,6 @@ public class AssetSetter {
 
     }
     public void setMonster() {
-//        if(gp.currentMap.equals(gp.map_1)) {
-//            gp.monster[0] = new monster_orc(gp);
-//            gp.monster[0].worldX = gp.getTileSize() * 23;
-//            gp.monster[0].worldY = gp.getTileSize() * 5;
-//            gp.monster[1] = new monster_orc(gp);
-//            gp.monster[1].worldX = gp.getTileSize() * 25;
-//            gp.monster[1].worldY = gp.getTileSize() * 6;
-//            gp.monster[2] = new monster_orc(gp);
-//            gp.monster[2].worldX = gp.getTileSize() * 23;
-//            gp.monster[2].worldY = gp.getTileSize() * 8;
-//        }
         if(gp.getCurrentMap() == gp.getMap_1() || gp.getCurrentMap() == gp.getMap_2() || gp.getCurrentMap() == gp.getMap_3()) {
             for (int i = 0; i < 10; i++) {
                 gp.getMonster()[i] = new monster_orc(gp);
@@ -93,23 +82,6 @@ public class AssetSetter {
         }
     }
     public void setMonster(int index) {
-//        if(gp.currentMap.equals(gp.map_1)) {
-//            if (index == 0) {
-//                gp.monster[0] = new monster_orc(gp);
-//                gp.monster[0].worldX = gp.getTileSize() * 23;
-//                gp.monster[0].worldY = gp.getTileSize() * 5;
-//            }
-//            if(index == 1) {
-//                gp.monster[1] = new monster_orc(gp);
-//                gp.monster[1].worldX = gp.getTileSize() * 25;
-//                gp.monster[1].worldY = gp.getTileSize() * 6;
-//            }
-//            if(index == 2) {
-//                gp.monster[2] = new monster_orc(gp);
-//                gp.monster[2].worldX = gp.getTileSize() * 23;
-//                gp.monster[2].worldY = gp.getTileSize() * 8;
-//            }
-//        }
         if(gp.getCurrentMap() == gp.getMap_1() || gp.getCurrentMap() == gp.getMap_2() || gp.getCurrentMap() == gp.getMap_3()) {
             gp.getMonster()[index] = new monster_orc(gp);
             randomIndex(index);

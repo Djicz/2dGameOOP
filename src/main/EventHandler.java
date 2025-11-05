@@ -21,7 +21,6 @@ public class EventHandler {
     public void checkEvent() {
 //        if(hit(27, 16, "right"))    damagePit(gp.dialogueState);
 //        if(hit(23, 12, "up"))   healHeart(gp.dialogueState);
-
         if(gp.getCurrentMap().equals(gp.getMap_1()) && hit(40, 35, "up") && gp.getTeleSet() == false) {
 
 //            System.out.println(gp.checkGate);
