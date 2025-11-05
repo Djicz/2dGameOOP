@@ -8,7 +8,6 @@ import java.net.URL;
 public class Sound {
     Clip clip; // Su dung luu tep am thanh
     URL soundURL[] = new URL[30]; // mang luu duong dan cac am thanh
-
     public Sound() {
         soundURL[0] = getClass().getResource("/sound/worldMap.wav");
         soundURL[1] = getClass().getResource("/sound/dungeon.wav");
@@ -20,18 +19,15 @@ public class Sound {
         soundURL[7] = getClass().getResource("/sound/orc_damage.wav");
         soundURL[8] = getClass().getResource("/sound/boss_atk.wav");
     }
-
     public void setFile(int i) {
         try{
             AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);
             clip = AudioSystem.getClip();
             clip.open(ais);
         }catch(Exception e) {
-
         }
     }
     public void play() {
-
         clip.start();
     }
     public void loop() {

@@ -170,11 +170,17 @@ public class UI {
 
             drawCharacterStatus();
             drawInventory();
+            int itemsNum = 5 * slotNumY + slotNumX;
             if(gp.getKeyHandler().enterPressed == true) {
-                int itemsNum = 5 * slotNumY + slotNumX;
                 if (itemsNum < gp.getPlayer().items.size()) {
                     gp.getKeyHandler().enterPressed = false;
                     gp.setGameState(gp.getCharacterState_notify());
+                }
+            }
+            if(gp.getKeyHandler().sellPressed == true) {
+                if (itemsNum < gp.getPlayer().items.size()) {
+                    gp.getKeyHandler().sellPressed = false;
+                    gp.setGameState(gp.getSellItemsState());
                 }
             }
             if(gp.getPlayer().hasKey == 8) {
@@ -193,6 +199,23 @@ public class UI {
                     item = gp.getNpc()[0].items.get(itemsNum);
                     gp.setGameState(gp.getShopState_notify());
                 }
+            }
+        }
+        if(gp.getGameState() == gp.getSellItemsState()) {
+            drawCharacterStatus();
+            drawInventory();
+            drawNotify();
+            if(gp.getKeyHandler().enterPressed == true) {
+                int itemsNum = 5 * slotNumY + slotNumX;
+                if (itemsNum < gp.getPlayer().items.size()) {
+                    if(gp.getPlayer().items.get(itemsNum).type != SuperObject.keyItems) {
+                        gp.getNpc()[0].items.add(gp.getPlayer().items.get(itemsNum));
+                        gp.getPlayer().coin += gp.getPlayer().items.get(itemsNum).price;
+                        gp.getPlayer().items.remove(itemsNum);
+                    }
+                }
+                gp.getKeyHandler().enterPressed = false;
+                gp.setGameState(gp.getCharacterState());
             }
         }
         if(gp.getGameState() == gp.getShopState_notify()) {

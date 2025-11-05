@@ -34,6 +34,7 @@ public class GamePanel extends JPanel implements Runnable {
     private final int characterState_notify = 7;
     private final int gameOverState = 8;
     private final int gameWinState = 9;
+    private final int sellItemsState = 10;
     private boolean callWithShop = false;
     private boolean checkGate = false;
     private int[] reviveCounter = new int[20];
@@ -138,6 +139,9 @@ public class GamePanel extends JPanel implements Runnable {
     }
     public int getGameWinState() {
         return gameWinState;
+    }
+    public int getSellItemsState() {
+        return sellItemsState;
     }
     public boolean isCallWithShop() {
         return callWithShop;
