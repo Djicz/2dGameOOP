@@ -18,6 +18,7 @@ public class Data implements Serializable {
     int life, maxLife;
     int stamina, maxStamina;
     int hpPotion, manaPotion;
+    int key;
     String currentMap;
     String currentWeapon;
     String currentShield;

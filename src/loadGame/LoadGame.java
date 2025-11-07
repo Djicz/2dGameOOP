@@ -103,9 +103,10 @@ public class LoadGame {
             data.currentMap = gp.getCurrentMap();
             data.hpPotion = gp.getPlayer().hpQAverage;
             data.manaPotion = gp.getPlayer().manaQAverage;
-            if(data.currentWeapon!= null)   data.currentWeapon = gp.getPlayer().currentWeapon.name;
+            data.key = gp.getPlayer().hasKey;
+            if(gp.getPlayer().currentWeapon!= null)   data.currentWeapon = gp.getPlayer().currentWeapon.name;
             else    data.currentWeapon = "null";
-            if(data.currentShield != null)  data.currentShield = gp.getPlayer().currentShield.name;
+            if(gp.getPlayer().currentShield != null)  data.currentShield = gp.getPlayer().currentShield.name;
             else    data.currentShield = "null";
             for(int i = 0; i < gp.getPlayer().items.size(); i++) {
                 data.inventory.add(gp.getPlayer().items.get(i).name);
@@ -138,6 +139,7 @@ public class LoadGame {
             gp.getPlayer().maxLife = data.maxLife;
             gp.getPlayer().stamina = data.stamina;
             gp.getPlayer().maxStamina = data.maxStamina;
+            gp.getPlayer().hasKey = data.key;
             gp.setCurrentMap(data.currentMap);
             gp.getTileM().loadMap(gp.getCurrentMap());
             gp.getPlayer().currentWeapon = getObject(data.currentWeapon);
@@ -154,6 +156,7 @@ public class LoadGame {
                     gp.getNpc()[0].items.add(getObject(data.shop.get(i)));
                 }
             }
+            gp.setUpGame();
         }catch(Exception e){}
     }
 
