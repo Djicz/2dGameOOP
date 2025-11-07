@@ -110,8 +110,10 @@ public class LoadGame {
             for(int i = 0; i < gp.getPlayer().items.size(); i++) {
                 data.inventory.add(gp.getPlayer().items.get(i).name);
             }
-            for(int i = 0; i < gp.getNpc()[0].items.size(); i++) {
-                data.shop.add(gp.getNpc()[0].items.get(i).name);
+            if(data.currentMap.equals(gp.getMap_1())) {
+                for (int i = 0; i < gp.getNpc()[0].items.size(); i++) {
+                    data.shop.add(gp.getNpc()[0].items.get(i).name);
+                }
             }
             oos.writeObject(data);
             oos.close();
@@ -137,6 +139,7 @@ public class LoadGame {
             gp.getPlayer().stamina = data.stamina;
             gp.getPlayer().maxStamina = data.maxStamina;
             gp.setCurrentMap(data.currentMap);
+            gp.getTileM().loadMap(gp.getCurrentMap());
             gp.getPlayer().currentWeapon = getObject(data.currentWeapon);
             gp.getPlayer().currentShield = getObject(data.currentShield);
             gp.getPlayer().hpQAverage = data.hpPotion;
@@ -146,8 +149,10 @@ public class LoadGame {
             for(int i = 0; i < data.inventory.size(); i++) {
                 gp.getPlayer().items.add(getObject(data.inventory.get(i)));
             }
-            for(int i = 0; i < data.shop.size(); i++) {
-                gp.getNpc()[0].items.add(getObject(data.shop.get(i)));
+            if(data.currentMap.equals(gp.getMap_1())) {
+                for (int i = 0; i < data.shop.size(); i++) {
+                    gp.getNpc()[0].items.add(getObject(data.shop.get(i)));
+                }
             }
         }catch(Exception e){}
     }
