@@ -50,6 +50,7 @@ public class UI {
 
         }
         if(gp.getGameState() == gp.getGameContinue()) {
+//            System.out.println(gp.getCurrentMap());
             gp.setCallWithShop(false);
             gp.setCheckGate(false);
             drawSpItems();

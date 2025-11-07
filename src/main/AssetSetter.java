@@ -39,43 +39,43 @@ public class AssetSetter {
 
     }
     public void setMonster() {
-        if(gp.getCurrentMap() == gp.getMap_1() || gp.getCurrentMap() == gp.getMap_2() || gp.getCurrentMap() == gp.getMap_3()) {
+        if(gp.getCurrentMap().equals(gp.getMap_1()) || gp.getCurrentMap().equals(gp.getMap_2()) || gp.getCurrentMap().equals(gp.getMap_3())) {
             for (int i = 0; i < 10; i++) {
                 gp.getMonster()[i] = new monster_orc(gp);
                 randomIndex(i);
             }
         }
-        if(gp.getCurrentMap() == gp.getMap_4()) {
+        if(gp.getCurrentMap().equals(gp.getMap_4())) {
             gp.getMonster()[10] = new monster_kingSkeleton(gp);
             gp.getMonster()[10].worldX = gp.getTileSize() * 5;
             gp.getMonster()[10].worldY = gp.getTileSize() * 23;
         }
-        if(gp.getCurrentMap() == gp.getMap_5()) {
+        if(gp.getCurrentMap().equals(gp.getMap_5())) {
             gp.getMonster()[10] = new monster_kingSkeleton(gp);
             gp.getMonster()[10].worldX = gp.getTileSize() * 7;
             gp.getMonster()[10].worldY = gp.getTileSize() * 6;
         }
-        if(gp.getCurrentMap() == gp.getMap_6()) {
+        if(gp.getCurrentMap().equals(gp.getMap_6())) {
             gp.getMonster()[10] = new monster_kingSkeleton(gp);
             gp.getMonster()[10].worldX = gp.getTileSize() * 13;
             gp.getMonster()[10].worldY = gp.getTileSize() * 43;
         }
-        if(gp.getCurrentMap() == gp.getMap_7()) {
+        if(gp.getCurrentMap().equals(gp.getMap_7())) {
             gp.getMonster()[10] = new monster_kingSkeleton(gp);
             gp.getMonster()[10].worldX = gp.getTileSize() * 6;
             gp.getMonster()[10].worldY = gp.getTileSize() * 40;
         }
-        if(gp.getCurrentMap() == gp.getMap_8()) {
+        if(gp.getCurrentMap().equals(gp.getMap_8())) {
             gp.getMonster()[10] = new monster_kingSkeleton(gp);
             gp.getMonster()[10].worldX = gp.getTileSize() * 24;
             gp.getMonster()[10].worldY = gp.getTileSize() * 19;
         }
-        if(gp.getCurrentMap() == gp.getMap_9()) {
+        if(gp.getCurrentMap().equals(gp.getMap_9())) {
             gp.getMonster()[10] = new monster_kingSkeleton(gp);
             gp.getMonster()[10].worldX = gp.getTileSize() * 12;
             gp.getMonster()[10].worldY = gp.getTileSize() * 19;
         }
-        if(gp.getCurrentMap() == gp.getMap_10()) {
+        if(gp.getCurrentMap().equals(gp.getMap_10())) {
             gp.getMonster()[10] = new monster_kingSkeleton(gp);
             gp.getMonster()[10].worldX = gp.getTileSize() * 24;
             gp.getMonster()[10].worldY = gp.getTileSize() * 14;
