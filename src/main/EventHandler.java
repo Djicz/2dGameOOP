@@ -207,22 +207,11 @@ public class EventHandler {
         }
 
     }
-    public void healHeart(int gameState){
-        if(gp.getKeyHandler().enterPressed == true) {
-            gp.setGameState(gameState);
-            gp.getUi().currentDialogue = "1 coc nuoc da'i vao mom";
-            gp.getPlayer().life++;
-        }
-        gp.getKeyHandler().enterPressed = false;
-    }
-    public void damagePit(int gameState){
-        gp.setGameState(gameState);
-        gp.getUi().currentDialogue = "Dam trung bay roi thang ngu";
-        gp.getPlayer().life--;
-    }
+
+
     public void mapTele(int gameState) {
         gp.setGameState(gameState);
-        gp.getUi().currentDialogue = "Ban co muon chac dich chuyen toi me cung khong?";
+        gp.getUi().currentDialogue = "Are you sure you want to move?";
         gp.setCheckGate(true);
     }
     public boolean hit(int eventCol, int eventRow, String reqDirection) {
