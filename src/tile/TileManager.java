@@ -210,7 +210,7 @@ public class TileManager {
                 // 🔸 Nếu vượt ngoài bản đồ thì lấy tile mặc định
                 if (worldRow < 0 || worldRow >= gp.getMaxWorldRow() ||
                         worldCol < 0 || worldCol >= gp.getMaxWorldCol()) {
-                    if(gp.getCurrentMap() == gp.getMap_1() || gp.getCurrentMap() == gp.getMap_2() || gp.getCurrentMap() == gp.getMap_3())   tileNum = 19; // tile mặc định, ví dụ: cỏ
+                    if(gp.getCurrentMap().equals(gp.getMap_1()) || gp.getCurrentMap().equals(gp.getMap_2()) || gp.getCurrentMap().equals(gp.getMap_3()))   tileNum = 19; // tile mặc định, ví dụ: cỏ
                     else tileNum = 0;
                 } else {
                     tileNum = mapFromFile[worldRow][worldCol];

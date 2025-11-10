@@ -3,6 +3,7 @@ package main;
 import objects.*;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -618,20 +619,29 @@ public class UI {
 //        g2.drawString(text, x + 5, y + 5);
 //        g2.setColor(Color.white);
 //        g2.drawString(text, x, y);
-        BufferedImage titleImage = null;
-        try {
-            titleImage = ImageIO.read(getClass().getResourceAsStream("/tiles/title.png"));
-        }catch(IOException e) {
-            e.printStackTrace();
-        }
+//        BufferedImage titleImage = null;
+//        try {
+////            titleImage = ImageIO.read(getClass().getResourceAsStream("/tiles/title.png"));
+//        }catch(IOException e) {
+//            e.printStackTrace();
+//        }
+        ImageIcon gifIcon = new ImageIcon(getClass().getResource("/tiles/title.gif"));
+        Image titleImage = gifIcon.getImage();
 
 
         g2.drawImage(titleImage, 0, 0, gp.getScreenWidth(), gp.getScreenHeight(), null);
-
-        String text = "Game Start";
-        Font r = maruMonica.deriveFont(Font.BOLD, 35f);
+        Font r = maruMonica.deriveFont(Font.BOLD, 70);
         g2.setFont(r);
-        g2.setColor(Color.gray);
+        g2.setColor(Color.black);
+
+        String titleS = "The Bone Key Saga";
+        int dx = getXInMiddleScreen(titleS);
+        int dy = gp.getTileSize() * 3 + 24;
+        g2.drawString(titleS, dx, dy);
+
+        g2.setFont(maruMonica.deriveFont(Font.BOLD, 35f));
+        g2.setColor(Color.white);
+        String text = "Game Start";
         int x = getXInMiddleScreen(text);
         int y = gp.getTileSize() * 3;
         x = getXInMiddleScreen(text);
