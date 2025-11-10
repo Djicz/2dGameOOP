@@ -476,7 +476,7 @@ public class GamePanel extends JPanel implements Runnable {
             update();
             // Ve lai map
             repaint(); // Phuong thuc goi paintComponent()
-
+            Toolkit.getDefaultToolkit().sync();
             try {
                 double remainingTime = nextDrawTime - System.nanoTime(); // Thoi gian con phai cho cho lan ve tiep theo
 
